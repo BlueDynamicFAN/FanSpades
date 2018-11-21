@@ -1,0 +1,104 @@
+{
+    "Floor": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Seafloor2_xyz_n_uv.ply",
+        "noLight": false,
+        "position": [
+            -29.100074768066406,
+            -29.500076293945313,
+            -37.99999237060547
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Stonewall15_512x512.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Table": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            0.8999999761581421
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/table_n_uv.ply",
+        "noLight": false,
+        "position": [
+            12.301259994506836,
+            -13.10006332397461,
+            -46.800331115722656
+        ],
+        "rotation": [
+            -7.430184723489219e-06,
+            5.448771389637841e-07,
+            -0.0010896202875301242,
+            1.0
+        ],
+        "scale": 0.6500005722045898,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Plastic.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

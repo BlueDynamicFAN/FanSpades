@@ -1,0 +1,26 @@
+CAMERA:
+	FLY- Camera
+MODELS:
+	looping through models array - LEFT/RIGHT ARROWS
+	movements - alt + (WASD + QE)
+	scale - alt + (-/+) 
+	rotation - alt + (x/y/z) + (9/0)
+	isVisiable true/false - alt + i
+	isWireFramed true/false - alt + o
+	specular power  - alt + (c/v)
+LIGHTS:
+	looping through lights array - UP/DOWN ARROWS
+	movements - ctrl + (WASD + QE)
+	linear atten - ctrl + (1/2)
+	quad atten - ctrl + (3/4)
+	turn on/off - ctrl + (9/0)
+	change color to random - ctrl + L
+	change color to white - ctrl + K
+
+SAVE TO JSON:
+	Save models,light and camera - ctrl+alt+S
+	Save models		     - ctrl+alt+M
+	Save light 		     - ctrl+alt+L
+	Save camera                  - ctrl+alt+C
+
+	
