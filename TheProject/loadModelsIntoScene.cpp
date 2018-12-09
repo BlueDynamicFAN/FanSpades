@@ -9,7 +9,6 @@
 void setModelsParams();
 void setTextures();
 
-
 void loadModelsIntoScene(int program)
 {
 	setModelsParams(); // load models from assets/JSON
@@ -48,7 +47,6 @@ void loadModelsIntoScene(int program)
 	setTextures();
 }
 
-
 void setModelsParams()
 {
 	loadEntitiesFromJASON("./assets/JSON/entities2.json");
@@ -60,28 +58,36 @@ void setTextures()
 {
 	::g_pTheTextureManager->SetBasePath("assets/textures");
 
-	if (!::g_pTheTextureManager->Create2DTextureFromBMPFile("Stonewall15_512x512.bmp", true))
-	{
-		std::cout << "Didn't load texture" << std::endl;
-	}
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("fabric.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("brick-wall.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("Plastic.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("wood.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("cracked.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("apple.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("fur.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("stones.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("Bubble-Texture.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("Dog_diffuse.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("S1.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("S2.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("S3.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("S4.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("S5.bmp", true);
 
-	cMeshObject* tab = findObjectByFriendlyName("Table");
-	sTextureInfo texture;
-	texture.name = "cracked.bmp";
-	texture.strength = 0.7;
-	tab->vecTextures.push_back(texture);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("H1.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("H2.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("H3.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("H4.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("H5.bmp", true);
+
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("C1.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("C2.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("C3.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("C4.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("C5.bmp", true);
+
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("D1.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("D2.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("D3.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("D4.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("D5.bmp", true);
+
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("Blue.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("Green.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("Error.bmp", true);
+
+
 }
-
 
 cMeshObject* findObjectByFriendlyName(std::string theName) {
 
@@ -96,6 +102,7 @@ cMeshObject* findObjectByFriendlyName(std::string theName) {
 
 	return pTheObjectWeFound;
 }
+
 cMeshObject* findObjectByUniqueID(unsigned int ID) {
 	for (unsigned int index = 0; index != g_modelsToDraw.size(); index++)
 	{

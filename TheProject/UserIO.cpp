@@ -14,7 +14,7 @@ extern cLight* activeLight;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	activeModel = findObjectByUniqueID(activeId);
+	activeModel = g_modelsToDraw[10];
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
@@ -24,20 +24,36 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
 	{
 		if (activeId == 0) {
-			activeId = (unsigned int)g_modelsToDraw.size();
+			activeId = 10;
 			activeId -= 1;
 		}
 		else {
 			activeId -= 1;
 		}
 
-		activeModel = findObjectByUniqueID(activeId);
-		std::cout << activeId << " " << activeModel->friendlyName << std::endl;
+		activeModel->position = findObjectByUniqueID(activeId)->position;
+		activeModel->position += glm::vec3(1.0f, -0.7, 0.4);
+
+		std::cout << "Current selected card: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
+	}
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	{
+		if (findObjectByUniqueID(activeId)->bIsVisiable)
+		{
+			std::cout << "Card played: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
+			findObjectByUniqueID(activeId)->bIsVisiable = false;
+		}
+		else
+		{
+			std::cout << "Card already played" << std::endl;
+		}
+
 	}
 
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
 	{
-		unsigned int num = (unsigned int)g_modelsToDraw.size();
+		unsigned int num = 10;
 		if (activeId >= num - 1) {
 			activeId = 0;
 		}
@@ -45,8 +61,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			activeId += 1;
 		}
 
-		activeModel = findObjectByUniqueID(activeId);
-		std::cout << activeId << " " << activeModel->friendlyName << std::endl;
+		activeModel->position = findObjectByUniqueID(activeId)->position;
+		activeModel->position += glm::vec3(1.0f, -0.7, 0.4);
+
+		std::cout << "Current selected card: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
 	}
 
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS)

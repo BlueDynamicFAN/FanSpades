@@ -50,12 +50,13 @@ int main(void)
 		exit(EXIT_FAILURE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	window = glfwCreateWindow(1740, 1180, "Triple Project", NULL, NULL);
+	window = glfwCreateWindow(1740, 900, "Networking Project #3 - Veronika Kotckovich, Jenny Moon, Ryan O'Donnell", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+
 	glfwSetKeyCallback(window, key_callback);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -104,6 +105,7 @@ int main(void)
 	pSP->LoadUniformLocation("texBlendWeights[0]");
 	pSP->LoadUniformLocation("texBlendWeights[1]");
 
+	std::string textureNames[] = { "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp" };
 
 	meshManager = new VAOMeshManager();
 	loadModelsIntoScene(program);
@@ -193,7 +195,7 @@ void lightDebugSpheres(int program)
 	if (pLightManager->vecLights.size() != 0)
 	{
 		cMeshObject* pDebugSphere = findObjectByFriendlyName("DebugSph");
-		pDebugSphere->bIsVisiable = true;
+		pDebugSphere->bIsVisiable = false;
 		pDebugSphere->setDiffuseColor(glm::vec3(255.0f / 255.0f, 105.0f / 255.0f, 180.0f / 255.0f));
 		pDebugSphere->bUseVertexColour = false;
 		pDebugSphere->setUniformScale(1.0f);
