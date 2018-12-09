@@ -3,6 +3,18 @@
 #include <glm/vec4.hpp> // glm::vec4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/type_ptr.hpp>
+
+#define WIN32_LEAN_AND_MEAN
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
+#pragma comment(lib, "ws2_32.lib")
+#include <WinSock2.h>
+#include <Ws2tcpip.h>
+#include <iostream>
+#include "Buffer.h"
+#include "MessageProtocol.h"
+#include <windows.h>
+
 #include "linmath.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,6 +27,11 @@
 #include "cShaderManager.h"
 #include <ctime>
 #include <cstdlib>
+
+
+SOCKET Connection;
+int commandID;
+bool run = true;
 
 std::vector<cMeshObject*> g_modelsToDraw;
 unsigned int madelsToDraw = 1;
@@ -37,8 +54,87 @@ static void error_callback(int error, const char* description)
 	fprintf(stderr, "Error: %s\n", description);
 }
 
+
+//clientThread()
+//
+//Purpose: Handle a client thread; receiving messages from the server
+//@param: void
+//@return: void
+void clientThread()
+{
+	std::vector<char> packet(512);
+	int packLength;
+	while (run)
+	{
+		if ((packLength = recv(Connection, &packet[0], packet.size(), NULL)) < 1) {
+			closesocket(Connection);
+			WSACleanup();
+			run = false;
+		}
+
+		else
+		{
+			MessageProtocol* messageProtocol = new MessageProtocol();
+			messageProtocol->createBuffer(512);
+			messageProtocol->buffer->mBuffer = packet;
+			messageProtocol->readHeader(*messageProtocol->buffer);
+
+			messageProtocol->buffer->resizeBuffer(messageProtocol->messageHeader.packet_length);
+			if (messageProtocol->messageHeader.command_id == 1)
+			{
+				std::vector<int> theCards;
+				messageProtocol->receiveDeck(*messageProtocol->buffer, theCards);
+				for (int i = 0; i != theCards.size(); i++)
+				{
+					std::cout << theCards[i] << std::endl;
+				}
+			}
+			else {
+				messageProtocol->receiveMessage(*messageProtocol->buffer);
+				std::cout << messageProtocol->messageBody.message << std::endl;
+				commandID = messageProtocol->messageHeader.command_id;
+			}
+			delete messageProtocol;
+			//packet.clear();
+		}
+	}
+}
+
+
 int main(void)
 {
+	//SOCKET CONNEACTION
+	//Winsock Startup
+	WSAData wsaData;
+	WORD DllVersion = MAKEWORD(2, 1);
+	if (WSAStartup(DllVersion, &wsaData) != 0)
+	{
+		MessageBox(NULL, "Winsock startup failed", "Error", MB_OK | MB_ICONERROR);
+		exit(1);
+	}
+
+	//Setting Socket address
+	SOCKADDR_IN addr;
+	int sizeofadr = sizeof(addr);
+	inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr.s_addr);
+	addr.sin_port = htons(1234567);
+	addr.sin_family = AF_INET; //IPv4 
+
+	Connection = socket(AF_INET, SOCK_STREAM, NULL); //Creates connection socket
+	if (connect(Connection, (SOCKADDR*)&addr, sizeofadr) != 0)
+	{
+		MessageBox(NULL, "Fainled to connect", "Error", MB_OK | MB_ICONERROR);
+	}
+	std::cout << "Connected!" << std::endl;
+
+	/*MessageProtocol* messageProtocol = new MessageProtocol();
+	messageProtocol->createBuffer(256);*/
+
+	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)clientThread, NULL, NULL, NULL); //Create a thread
+
+	MessageProtocol* messageSendProtocol = new MessageProtocol();
+	//********************************************
+
 	GLFWwindow* window;
 	GLuint vertex_shader, fragment_shader;// program;
 	pLightManager = new cLightManager();
@@ -163,6 +259,42 @@ int main(void)
 		pLightManager->setLights(program, "./assets/JSON/lights1.json");
 
 		lightDebugSpheres(program);
+
+		/*std::string input = "";
+		std::getline(std::cin, input);
+		messageSendProtocol->createBuffer(8);
+		messageSendProtocol->messageHeader.command_id = commandID;
+		if (input == "leaveRoom")
+		{
+			if (messageSendProtocol->messageBody.roomName != "")
+			{
+				messageSendProtocol->leaveRoom(*messageSendProtocol->buffer);
+				std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+				send(Connection, &packet[0], packet.size(), 0);
+				continue;
+			}
+		}
+		if (commandID == 0)
+		{
+			messageSendProtocol->messageBody.name = input.c_str();
+			messageSendProtocol->setName(*messageSendProtocol->buffer);
+		}
+		else if (commandID == 1)
+		{
+			messageSendProtocol->messageBody.message = input.c_str();
+			messageSendProtocol->sendMessage(*messageSendProtocol->buffer);
+		}
+
+		else if (commandID == 2)
+		{
+			messageSendProtocol->messageBody.roomName = input.c_str();
+			messageSendProtocol->joinRoom(*messageSendProtocol->buffer);
+		}
+
+		std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+		send(Connection, &packet[0], packet.size(), 0);
+
+		Sleep(10);*/
 
 		UpdateWindowTitle(window);
 		processKeys(window);

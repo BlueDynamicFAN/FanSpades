@@ -34,6 +34,9 @@
     <Filter Include="JSON_files">
       <UniqueIdentifier>{f312bd1e-7e3c-4f87-b625-0b07ae99341d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NETWORKING">
+      <UniqueIdentifier>{aadfe273-2257-4260-8114-5b7a75acff84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,6 +99,12 @@
     <ClCompile Include="cMeshObject.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>NETWORKING</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageProtocol.cpp">
+      <Filter>NETWORKING</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -145,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="cMeshObject.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>NETWORKING</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageProtocol.h">
+      <Filter>NETWORKING</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

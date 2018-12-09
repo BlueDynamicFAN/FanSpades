@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="cFlyCamera.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cLightHelper.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="DrawObj.cpp" />
     <ClCompile Include="EntitryManager.cpp" />
     <ClCompile Include="loadModelsIntoScene.cpp" />
+    <ClCompile Include="MessageProtocol.cpp" />
     <ClCompile Include="Param.cpp" />
     <ClCompile Include="PhysicsStuff.cpp" />
     <ClCompile Include="TextureManager\C24BitBMPpixel.cpp" />
@@ -160,12 +162,14 @@
     <ClCompile Include="UserIO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="cFlyCamera.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cLightHelper.h" />
     <ClInclude Include="cLightManager.h" />
     <ClInclude Include="cMeshObject.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="MessageProtocol.h" />
     <ClInclude Include="Param.h" />
     <ClInclude Include="TextureManager\C24BitBMPpixel.h" />
     <ClInclude Include="TextureManager\cBasicTextureManager.h" />
