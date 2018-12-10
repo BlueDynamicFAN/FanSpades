@@ -28,6 +28,7 @@
 #include <ctime>
 #include <cstdlib>
 
+std::vector<int> theCards;
 
 SOCKET Connection;
 int commandID;
@@ -82,7 +83,6 @@ void clientThread()
 			messageProtocol->buffer->resizeBuffer(messageProtocol->messageHeader.packet_length);
 			if (messageProtocol->messageHeader.command_id == 1)
 			{
-				std::vector<int> theCards;
 				messageProtocol->receiveDeck(*messageProtocol->buffer, theCards);
 				for (int i = 0; i != theCards.size(); i++)
 				{
@@ -186,7 +186,6 @@ int main(void)
 	
 	//***creating a chader program
 	GLuint program = pTheShaderManager->getIDFromFriendlyName("myShader");
-	
 
 	// Load the uniform location values (some of them, anyway)
 	cShaderManager::cShaderProgram* pSP = ::pTheShaderManager->pGetShaderProgramFromFriendlyName("myShader");
@@ -200,8 +199,6 @@ int main(void)
 	pSP->LoadUniformLocation("texture07");
 	pSP->LoadUniformLocation("texBlendWeights[0]");
 	pSP->LoadUniformLocation("texBlendWeights[1]");
-
-	std::string textureNames[] = { "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp" };
 
 	meshManager = new VAOMeshManager();
 	loadModelsIntoScene(program);
@@ -223,8 +220,19 @@ int main(void)
 
 	double lastTime = glfwGetTime();
 
+	std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
+
+	
+
 	while (!glfwWindowShouldClose(window))
 	{
+		if (theCards.size() == 10)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				g_modelsToDraw[i]->vecTextures[0].name = textureNames[theCards[i]];
+			}
+		}
 		float ratio;
 		int width, height;
 
@@ -348,4 +356,16 @@ void lightDebugSpheres(int program)
 		const float INFINITY_DISTANCE = 0.01;
 
 	}
+}
+
+void playCard(int cardId)
+{
+	MessageProtocol* messageSendProtocol = new MessageProtocol();
+	messageSendProtocol->createBuffer(8);
+	messageSendProtocol->messageHeader.command_id = commandID;
+
+	messageSendProtocol->sendCard(*messageSendProtocol->buffer, theCards[cardId], cardId);
+
+	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+	send(Connection, &packet[0], packet.size(), 0);
 }

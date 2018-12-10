@@ -202,3 +202,18 @@ void MessageProtocol::leaveRoom(Buffer &myBuffer)
 	}
 	this->messageBody.roomName = "";
 }
+
+void MessageProtocol::sendCard(Buffer &myBuffer, int cardId, int posId)
+{
+	this->messageHeader.command_id = 04;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) + sizeof(int) + sizeof(int);
+
+	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+
+	myBuffer.WriteInt32LE(sizeof(cardId));
+	myBuffer.WriteInt32LE(cardId);
+
+	myBuffer.WriteInt32LE(posId);
+}

@@ -34,6 +34,7 @@ public:
 	void leaveRoom(Buffer &myBuffer);
 	void createBuffer(size_t index);
 	void receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck);
+	void sendCard(Buffer &myBuffer, int cardId, int posId);
 
 	Header messageHeader;
 	Body messageBody;

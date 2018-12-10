@@ -84,7 +84,7 @@ void setTextures()
 
 	::g_pTheTextureManager->Create2DTextureFromBMPFile("Blue.bmp", true);
 	::g_pTheTextureManager->Create2DTextureFromBMPFile("Green.bmp", true);
-	::g_pTheTextureManager->Create2DTextureFromBMPFile("Error.bmp", true);
+	::g_pTheTextureManager->Create2DTextureFromBMPFile("Red.bmp", true);
 
 
 }

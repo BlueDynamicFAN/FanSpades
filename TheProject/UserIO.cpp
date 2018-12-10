@@ -11,6 +11,7 @@ unsigned int activeLightId = 0;
 cMeshObject* activeModel = NULL;//findObjectByUniqueID(activeId);
 extern cLightManager* pLightManager;
 extern cLight* activeLight;
+void playCard(int cardId);
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -32,7 +33,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		activeModel->position = findObjectByUniqueID(activeId)->position;
-		activeModel->position += glm::vec3(1.0f, -0.7, 0.4);
+		activeModel->position += glm::vec3(1.0f, -1.0, 1.0);
 
 		std::cout << "Current selected card: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
 	}
@@ -42,6 +43,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (findObjectByUniqueID(activeId)->bIsVisiable)
 		{
 			std::cout << "Card played: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
+			playCard(activeId);
 			findObjectByUniqueID(activeId)->bIsVisiable = false;
 		}
 		else

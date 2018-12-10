@@ -42,7 +42,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "H1.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -93,7 +93,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -144,7 +144,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -195,7 +195,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -246,7 +246,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -297,7 +297,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -348,7 +348,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -399,7 +399,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -450,7 +450,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,
@@ -478,7 +478,7 @@
         "noLight": false,
         "position": [
             35.0,
-            -5.0,
+            0.0,
             -68.0
         ],
         "rotation": [
@@ -501,7 +501,7 @@
             1.0
         ],
         "textureStren": 1.0,
-        "textuteName": "Error.bmp",
+        "textuteName": "Red.bmp",
         "useJSON": true,
         "vellocity": [
             0.0,

@@ -4,6 +4,7 @@
 //  author: Veronika Kotckovich
 
 #include "MessageProtocol.h"
+#include <iostream>
 
 //Constructor
 //
@@ -110,10 +111,9 @@ void MessageProtocol::sendMessage(Buffer &myBuffer)
 	{
 		myBuffer.WriteChar8LE(temp[i]);
 	}
-
 }
 
-void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<int> deck)
+void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
 {
 	this->messageHeader.command_id = 01;
 	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 11;
@@ -124,10 +124,9 @@ void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<int> deck)
 
 	for (int i = 0; i != deck.size(); i++)
 	{
-		myBuffer.WriteInt32LE(deck[i]);
+		myBuffer.WriteInt32LE(deck[i]->id);
 	}
 }
-
 
 //Send message -- with custome command id
 //? int string int string
@@ -163,5 +162,25 @@ void MessageProtocol::joinRoom(Buffer &myBuffer)
 	{
 		this->messageBody.roomName += myBuffer.ReadChar8LE();
 	}
+}
 
+void MessageProtocol::receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards)
+{
+	int size = myBuffer.ReadInt32LE();
+	int cardId = myBuffer.ReadInt32LE();
+	int posId = myBuffer.ReadInt32LE();
+	
+	std::cout << "CARDID " << cardId << std::endl;
+	std::cout << "POSID " << posId << std::endl;
+
+	if (deck[posId]->id == cardId)
+	{
+		cards.push_back(deck[posId]);
+		deck.erase(deck.begin() + posId);
+	}
+
+	for (cCard* c : deck)
+	{
+		std::cout << c->id << std::endl;
+	}
 }

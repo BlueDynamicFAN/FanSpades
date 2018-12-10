@@ -10,6 +10,16 @@
 #include <string>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include "cCard.h"
+
+std::vector<cCard*> createDeck();
+std::vector<cCard*> cardsPlayed;
+void checkRound(std::vector<cCard*> &cardsPlayed, int &dealerId, int &otherId);
+
+int dealerId = 0;
+int otherId = 0;
+
+std::vector<Position> positions = { Position{35.0f, 0.0f, 67.0f}, Position{35.0f, 0.0f, 52.0f}, Position{35.0f, 0.0f, 37.0f}, Position{35.0f, 0.0f, 22.0f}, Position{35.0f, 0.0f, 7.0f}, Position{35.0f, 0.0f, -8.0f}, Position{35.0f, 0.0f, -23.0f}, Position{35.0f, 0.0f, -38.0f}, Position{35.0f, 0.0f, -53.0f}, Position{35.0f, 0.0f, -68.0f} };
 
 struct client
 {
@@ -18,24 +28,23 @@ struct client
 	std::string room = "";
 	bool isPlaying = false;
 	int GameId = -1;
-	std::vector<int> playerDeck;
+	std::vector<cCard*> playerDeck;
+	int score = 0;
 };
 
 struct Game
 {
-	std::vector<int> theCardDeck = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+	std::vector<cCard*> theCardDeck = createDeck();
 	int numCardsPerPlayer = 10;
 	int player1id, player2id;
 };
-
 
 client Clients[100];
 std::vector<int> lobby;
 std::vector<Game*> Games;
 
-
 int clientsCounter = 0;
-void sendDeckToClient(int plyerID, std::vector <int> theDeck);
+void sendDeckToClient(int plyerID, std::vector<cCard*> theDeck);
 void sendMessageToClient(SOCKET theConnection, int id, std::string message);
 void sendMessageToAllInGroup(std::string groupName, int id, std::string message);
 void sendMessageOthersInGroup(int clientIndex, std::string groupName, int id, std::string message);
@@ -116,6 +125,17 @@ void handleClients(int index)
 
 			sendMessageToClient(Clients[newGame->player1id].Connection, 0, "Starting the game");
 			sendMessageToClient(Clients[newGame->player2id].Connection, 0, "Starting the game");
+
+			for (int i = 0; i < 10; i++)
+			{
+				Clients[newGame->player1id].playerDeck[i]->position = positions[i];
+				Clients[newGame->player1id].playerDeck[i]->playerId = newGame->player1id;
+				Clients[newGame->player2id].playerDeck[i]->position = positions[i];
+				Clients[newGame->player2id].playerDeck[i]->playerId = newGame->player2id;
+			}
+
+			dealerId = newGame->player1id;
+			otherId = newGame->player2id;
 
 			sendDeckToClient(newGame->player1id, Clients[newGame->player1id].playerDeck);
 			sendDeckToClient(newGame->player2id, Clients[newGame->player2id].playerDeck);
@@ -285,6 +305,34 @@ void handleClients(int index)
 				sendMessageOthersInGroup(index, Clients[index].room, 1, message);
 			}
 
+			if (messageProtocol->messageHeader.command_id == 4)
+			{
+				messageProtocol->receiveCard(*messageProtocol->buffer, Clients[index].playerDeck, cardsPlayed);
+
+				if (cardsPlayed.size() == 2)
+				{
+					int player1 = 0;
+					int player2 = 0;
+
+					for (cCard* c : cardsPlayed)
+					{
+						if (c->playerId == index)
+						{
+							player1 += 1;
+						}
+						else
+						{
+							player2 += 1;
+						}
+					}
+
+					if (player1 == 1 && player2 == 1)
+					{
+						//checkRound(cardsPlayed);
+					}
+				}
+			}
+
 			packLength = 0;
 			packet.clear();
 			delete messageProtocol;
@@ -347,7 +395,7 @@ int main()
 }
 
 
-void sendDeckToClient(int plyerID, std::vector <int> theDeck)
+void sendDeckToClient(int plyerID, std::vector <cCard*> theDeck)
 {
 	MessageProtocol* messageSendProtocol = new MessageProtocol();
 	messageSendProtocol->messageHeader.command_id = 01;

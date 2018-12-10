@@ -8,6 +8,7 @@
 
 #include <string>
 #include "Buffer.h"
+#include "cCard.h"
 
 struct Body{
 	std::string roomName;
@@ -33,7 +34,8 @@ public:
 	void joinRoom(Buffer &myBuffer);
 	void leaveRoom(Buffer &myBuffer);
 	void createBuffer(size_t index);
-	void sendDeck(Buffer &myBuffer, std::vector<int> deck);
+	void sendDeck(Buffer &myBuffer, std::vector<cCard*> deck);
+	void receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards);
 	Header messageHeader;
 	Body messageBody;
 	Buffer* buffer;
