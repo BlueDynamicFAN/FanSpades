@@ -12,6 +12,7 @@ cMeshObject* activeModel = NULL;//findObjectByUniqueID(activeId);
 extern cLightManager* pLightManager;
 extern cLight* activeLight;
 void playCard(int cardId);
+extern bool PRESS;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -95,6 +96,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		activeLight = pLightManager->vecLights[activeLightId];
 		std::cout << activeLightId << " - " << activeLight->position.x << std::endl;
+	}
+
+	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+		PRESS = true;
 	}
 
 	return;

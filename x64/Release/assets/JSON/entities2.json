@@ -1,0 +1,614 @@
+{
+    "Card0": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            67.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card1": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            52.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card2": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            37.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card3": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            22.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card4": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            7.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card5": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            -8.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card6": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            -23.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card7": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            -38.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card8": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            -53.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Card9": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card.ply",
+        "noLight": false,
+        "position": [
+            35.0,
+            0.0,
+            -68.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Red.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Selection": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/Card2.ply",
+        "noLight": false,
+        "position": [
+            36.0,
+            -0.7,
+            67.4
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 1.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Blue.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    "Table": {
+        "accel": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bIsVisiable": true,
+        "bUseVertexColour": false,
+        "diffuse": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "doesPhysincs": false,
+        "isWireframed": false,
+        "meshFileName": "./assets/Models/table_n_uv.ply",
+        "noLight": false,
+        "position": [
+            0.0,
+            -100.0,
+            0.0
+        ],
+        "rotation": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "scale": 2.0,
+        "shape": 0,
+        "size": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "textureStren": 1.0,
+        "textuteName": "Green.bmp",
+        "useJSON": true,
+        "vellocity": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

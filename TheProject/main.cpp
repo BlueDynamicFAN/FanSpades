@@ -47,6 +47,8 @@ VAOMeshManager* meshManager;
 cLightManager* pLightManager;
 cLight* activeLight = NULL;
 
+bool PRESS = false;
+
 void UpdateWindowTitle(GLFWwindow* window);
 void lightDebugSpheres(int program);
 
@@ -88,6 +90,13 @@ void clientThread()
 				{
 					std::cout << theCards[i] << std::endl;
 				}
+			}
+			else if (messageProtocol->messageHeader.command_id == 4)
+			{
+				float x, y, z;
+				messageProtocol->receiveNewVelocity(*messageProtocol->buffer, x, y, z);
+				std::cout << "x: " << x << " y: " << y << " z: " << std::endl;
+
 			}
 			else {
 				messageProtocol->receiveMessage(*messageProtocol->buffer);
@@ -219,6 +228,7 @@ int main(void)
 	cLightHelper* pLightHelper = new cLightHelper();
 
 	double lastTime = glfwGetTime();
+	double elapsedTime = 0.0f;
 
 	std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
 
@@ -268,6 +278,40 @@ int main(void)
 
 		lightDebugSpheres(program);
 
+		double currentTime = glfwGetTime();
+		double deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+		const float MAX_DELTA_TIME = 0.1f;
+
+		if (deltaTime > MAX_DELTA_TIME)
+		{
+			deltaTime = MAX_DELTA_TIME;
+		}
+
+		elapsedTime += deltaTime;
+		if (elapsedTime > 0.6) //60Hz
+		{
+			messageSendProtocol->createBuffer(8);
+			messageSendProtocol->messageHeader.command_id = 01;
+			messageSendProtocol->messageBody.message = "GetUpdate";
+			messageSendProtocol->sendMessage(*messageSendProtocol->buffer);
+
+			std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+			send(Connection, &packet[0], packet.size(), 0);
+		}
+
+		if (PRESS) {
+			messageSendProtocol->createBuffer(8);
+			messageSendProtocol->sendID(*messageSendProtocol->buffer, 25, 03); //sending id 25
+			std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+
+			send(Connection, &packet[0], packet.size(), 0);
+			PRESS = !PRESS;
+		}
+
+
+
+		//******OLD
 		/*std::string input = "";
 		std::getline(std::cin, input);
 		messageSendProtocol->createBuffer(8);
@@ -342,7 +386,7 @@ void lightDebugSpheres(int program)
 		for (int i = 0; i < pLightManager->vecLights.size(); i++)
 		{
 
-			pDebugSphere->position = pLightManager->vecLights[i]->position;
+			//pDebugSphere->position = pLightManager->vecLights[i]->position;
 			DrawObj(pDebugSphere, program, IDENTITY);
 		}
 		//pDebugSphere->bIsVisiable = false;

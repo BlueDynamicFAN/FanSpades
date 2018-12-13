@@ -49,6 +49,57 @@ void MessageProtocol::readHeader(Buffer &myBuffer)
 	return;
 }
 
+
+
+
+void MessageProtocol::receiveID(Buffer &myBuffer, int &id)
+{
+	id = myBuffer.ReadInt32LE();
+}
+
+void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
+{
+	this->messageHeader.command_id = 01;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 11;
+	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+	myBuffer.WriteInt32LE(deck.size());
+
+	for (int i = 0; i != deck.size(); i++)
+	{
+		myBuffer.WriteInt32LE(deck[i]->id);
+	}
+}
+
+void MessageProtocol::sendNewVel(Buffer &myBuffer, std::string x, std::string y, std::string z)
+{
+	this->messageHeader.command_id = 04;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + x.length() + y.length() + z.length() + sizeof(int) * 3;
+	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(x.length());
+	const  char *tempX = x.c_str();
+	for (int i = 0; tempX[i] != '\0'; i++)
+	{
+		myBuffer.WriteChar8LE(tempX[i]);
+	}
+
+	myBuffer.WriteInt32LE(y.length());
+	const  char *tempY = y.c_str();
+	for (int i = 0; tempY[i] != '\0'; i++)
+	{
+		myBuffer.WriteChar8LE(tempY[i]);
+	}
+
+	myBuffer.WriteInt32LE(z.length());
+	const  char *tempZ = z.c_str();
+	for (int i = 0; tempZ[i] != '\0'; i++)
+	{
+		myBuffer.WriteChar8LE(tempZ[i]);
+	}
+}
+
+
 //receiveMessage()
 //
 //Purpouse: Receiving a message
@@ -58,22 +109,24 @@ void MessageProtocol::readHeader(Buffer &myBuffer)
 //
 //@param: Buffer &myBuffer -  the reference to current buffer
 
-void MessageProtocol::receiveMessage(Buffer &myBuffer)
-{
-	int mameLength = myBuffer.ReadInt32LE();
-	//printf("receiving package len %i ", this->messageHeader.packet_length);
-	for (int i = 0; i <= mameLength - 1; i++)
-	{
-		this->messageBody.name += myBuffer.ReadChar8LE();
-	}
+//void MessageProtocol::receiveMessage(Buffer &myBuffer)
+//{
+//	int mameLength = myBuffer.ReadInt32LE();
+//	//printf("receiving package len %i ", this->messageHeader.packet_length);
+//	for (int i = 0; i <= mameLength - 1; i++)
+//	{
+//		this->messageBody.name += myBuffer.ReadChar8LE();
+//	}
+//
+//	int length = myBuffer.ReadInt32LE();
+//	//printf("receiving package len %i ", this->messageHeader.packet_length);
+//	for (int i = 0; i <= length - 1; i++)
+//	{
+//		this->messageBody.message += myBuffer.ReadChar8LE();
+//	}
+//}
 
-	int length = myBuffer.ReadInt32LE();
-	//printf("receiving package len %i ", this->messageHeader.packet_length);
-	for (int i = 0; i <= length - 1; i++)
-	{
-		this->messageBody.message += myBuffer.ReadChar8LE();
-	}
-}
+
 
 //receiveName()
 //
@@ -113,21 +166,6 @@ void MessageProtocol::sendMessage(Buffer &myBuffer)
 	}
 }
 
-void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
-{
-	this->messageHeader.command_id = 01;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 11;
-	myBuffer.resizeBuffer(this->messageHeader.packet_length);
-	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
-	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-	myBuffer.WriteInt32LE(deck.size());
-
-	for (int i = 0; i != deck.size(); i++)
-	{
-		myBuffer.WriteInt32LE(deck[i]->id);
-	}
-}
-
 //Send message -- with custome command id
 //? int string int string
 //[header][length][message]
@@ -148,21 +186,6 @@ void MessageProtocol::sendMessage(Buffer &myBuffer, int id)
 
 }
 
-
-//Join room -- command id = 02
-//
-//Purpouse: Gets a roomname client wants to join
-//
-//? int string
-//[header][length][room_name]
-void MessageProtocol::joinRoom(Buffer &myBuffer)
-{
-	int length = myBuffer.ReadInt32LE();
-	for (int i = 0; i <= length - 1; i++)
-	{
-		this->messageBody.roomName += myBuffer.ReadChar8LE();
-	}
-}
 
 void MessageProtocol::receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards)
 {

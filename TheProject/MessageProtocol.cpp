@@ -80,30 +80,44 @@ void MessageProtocol::receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck)
 	}
 }
 
-//Set name -- command id = 00
-//
-//Purpose: Sending client's name to the server
-//
-//? int string int string int string
-//[header][length][name]
-//
-//@param: void
-//@return: void
-void MessageProtocol::setName(Buffer &myBuffer) 
+void MessageProtocol::sendID(Buffer &myBuffer, int cardID, int commandID)
 {
-	this->messageHeader.command_id = 00;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.name.length();
-
+	this->messageHeader.command_id = commandID;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(int) + sizeof(short);
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
 	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
 	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-	myBuffer.WriteInt32LE(this->messageBody.name.length());
-	const  char *temp = this->messageBody.name.c_str();
-	for (int i = 0; temp[i] != '\0'; i++)
-	{
-		myBuffer.WriteChar8LE(temp[i]);
-	}
+	myBuffer.WriteInt32LE(cardID);
 }
+
+void MessageProtocol::receiveNewVelocity(Buffer &myBuffer, float &x, float &y, float &z)
+{
+	int sizeX = myBuffer.ReadInt32LE();
+	std::string xS;
+	for (int i = 0; i != sizeX; i++)
+	{
+		xS += myBuffer.ReadChar8LE();
+	}
+
+	int sizeY = myBuffer.ReadInt32LE();
+	std::string yS;
+	for (int i = 0; i != sizeX; i++)
+	{
+		yS += myBuffer.ReadChar8LE();
+	}
+
+	int sizeZ = myBuffer.ReadInt32LE();
+	std::string zS;
+	for (int i = 0; i != sizeX; i++)
+	{
+		zS += myBuffer.ReadChar8LE();
+	}
+
+	x = std::stof(xS);
+	y = std::stof(yS);
+	z = std::stof(zS);
+}
+
 
 //Send message -- command id = 01
 //
@@ -144,18 +158,12 @@ void MessageProtocol::sendMessage(Buffer &myBuffer, int id)
 void MessageProtocol::sendMessage(Buffer &myBuffer)
 {
 	this->messageHeader.command_id = 01;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.name.length() +
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) +
 		sizeof(int) + this->messageBody.message.length();
 
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
 	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
 	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-	myBuffer.WriteInt32LE(this->messageBody.name.length());
-	const  char *tempName = this->messageBody.name.c_str();
-	for (int i = 0; tempName[i] != '\0'; i++)
-	{
-		myBuffer.WriteChar8LE(tempName[i]);
-	}
 	myBuffer.WriteInt32LE(this->messageBody.message.length());
 	const  char *temp = this->messageBody.message.c_str();
 	for (int i = 0; temp[i] != '\0'; i++)
@@ -163,44 +171,6 @@ void MessageProtocol::sendMessage(Buffer &myBuffer)
 		myBuffer.WriteChar8LE(temp[i]);
 	}
 
-}
-
-//Join room -- command id = 02
-//? int string
-//[header][length][room_name]
-void MessageProtocol::joinRoom(Buffer &myBuffer)
-{
-	this->messageHeader.command_id = 02;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.roomName.length();
-	myBuffer.resizeBuffer(this->messageHeader.packet_length);
-	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
-	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-	myBuffer.WriteInt32LE(this->messageBody.roomName.length());
-	const  char *temp = this->messageBody.roomName.c_str();
-	for (int i = 0; temp[i] != '\0'; i++)
-	{
-		myBuffer.WriteChar8LE(temp[i]);
-	}
-
-}
-
-//Join room -- command id = 03
-//? int string
-//[header][length][room_name]
-void MessageProtocol::leaveRoom(Buffer &myBuffer)
-{
-	this->messageHeader.command_id = 03;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.roomName.length();
-	myBuffer.resizeBuffer(this->messageHeader.packet_length);
-	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
-	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-	myBuffer.WriteInt32LE(this->messageBody.roomName.length());
-	const  char *temp = this->messageBody.roomName.c_str();
-	for (int i = 0; temp[i] != '\0'; i++)
-	{
-		myBuffer.WriteChar8LE(temp[i]);
-	}
-	this->messageBody.roomName = "";
 }
 
 void MessageProtocol::sendCard(Buffer &myBuffer, int cardId, int posId)

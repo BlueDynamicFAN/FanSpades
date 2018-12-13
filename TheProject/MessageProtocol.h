@@ -10,9 +10,7 @@
 #include "Buffer.h"
 
 struct Body{
-	std::string roomName;
 	std::string message;
-	std::string name;
 };
 
 struct Header {
@@ -28,14 +26,13 @@ public:
 	void readHeader(Buffer &myBuffer);
 	void sendMessage(Buffer &myBuffer, int id);
 	void sendMessage(Buffer &myBuffer);
-	void setName(Buffer &myBuffer);
 	void receiveMessage(Buffer &myBuffer);
-	void joinRoom(Buffer &myBuffer);
-	void leaveRoom(Buffer &myBuffer);
+	void sendID(Buffer &myBuffer, int cardID, int commandID);
 	void createBuffer(size_t index);
 	void receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck);
 	void sendCard(Buffer &myBuffer, int cardId, int posId);
-
+	void receiveNewVelocity(Buffer &myBuffer, float &x, float &y, float &z);
+	
 	Header messageHeader;
 	Body messageBody;
 	Buffer* buffer;
