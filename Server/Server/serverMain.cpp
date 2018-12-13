@@ -46,8 +46,6 @@ std::vector<Game*> Games;
 int clientsCounter = 0;
 void sendDeckToClient(int plyerID, std::vector<cCard*> theDeck);
 void sendMessageToClient(SOCKET theConnection, int id, std::string message);
-void sendMessageToAllInGroup(std::string groupName, int id, std::string message);
-void sendMessageOthersInGroup(int clientIndex, std::string groupName, int id, std::string message);
 
 void handleClients(int index)
 {
@@ -112,9 +110,6 @@ void handleClients(int index)
 
 				dealerId = newGame->player1id;
 				otherId = newGame->player2id;
-
-				sendMessageToClient(Clients[newGame->player1id].Connection, 0, "Starting the game");
-				sendMessageToClient(Clients[newGame->player2id].Connection, 0, "Starting the game");
 
 				sendDeckToClient(newGame->player1id, Clients[newGame->player1id].playerDeck);
 				sendDeckToClient(newGame->player2id, Clients[newGame->player2id].playerDeck);
