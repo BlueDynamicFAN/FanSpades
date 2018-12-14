@@ -35,6 +35,7 @@ public:
 	void adjMeshOrientationEulerAngles(float x, float y, float z, bool bIsDegrees = false);
 	void adjMeshOrientationQ(glm::quat adjOrientQ);
 	glm::vec3 position;
+	glm::vec3 initialPosition;
 
 	glm::vec3 nonUniformScale;
 	glm::vec3 color;

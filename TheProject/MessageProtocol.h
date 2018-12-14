@@ -31,7 +31,7 @@ public:
 	void createBuffer(size_t index);
 	void receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck);
 	void sendCard(Buffer &myBuffer, int cardId, int posId);
-	void receiveNewVelocity(Buffer &myBuffer, float &x, float &y, float &z);
+	void receiveNewVelocity(Buffer &myBuffer, int &id, float &x, float &y, float &z);
 	
 	Header messageHeader;
 	Body messageBody;

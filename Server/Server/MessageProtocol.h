@@ -33,7 +33,7 @@ public:
 	void receiveName(Buffer &myBuffer);
 
 	void createBuffer(size_t index);
-	void sendNewVel(Buffer &myBuffer, std::string x, std::string y, std::string z);
+	void sendNewVel(Buffer &myBuffer, int id, std::string x, std::string y, std::string z);
 	void sendDeck(Buffer &myBuffer, std::vector<cCard*> deck);
 	void receiveID(Buffer &myBuffer, int &id);
 	void receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards);

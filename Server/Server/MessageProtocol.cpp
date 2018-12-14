@@ -72,11 +72,15 @@ void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
 	}
 }
 
-void MessageProtocol::sendNewVel(Buffer &myBuffer, std::string x, std::string y, std::string z)
+void MessageProtocol::sendNewVel(Buffer &myBuffer, int id, std::string x, std::string y, std::string z)
 {
 	this->messageHeader.command_id = 04;
 	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + x.length() + y.length() + z.length() + sizeof(int) * 3;
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+
+	myBuffer.WriteInt32LE(id);
 	myBuffer.WriteInt32LE(x.length());
 	const  char *tempX = x.c_str();
 	for (int i = 0; tempX[i] != '\0'; i++)

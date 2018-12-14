@@ -29,6 +29,10 @@
 #include <cstdlib>
 
 std::vector<int> theCards;
+unsigned int activeId = 0;
+unsigned int cardToMove = 0;
+bool moveTheCard = false;
+glm::vec3 newPosition = glm::vec3(0.0f);
 
 SOCKET Connection;
 int commandID;
@@ -36,6 +40,7 @@ bool run = true;
 
 std::vector<cMeshObject*> g_modelsToDraw;
 unsigned int madelsToDraw = 1;
+
 
 std::string vertex_shader_text;
 std::string fragment_shader_text;
@@ -54,6 +59,7 @@ bool PRESS = false;
 
 void UpdateWindowTitle(GLFWwindow* window);
 void lightDebugSpheres(int program);
+void updateCardPosition(double deltaTime, int id, glm::vec3 newPosition);
 
 static void error_callback(int error, const char* description)
 {
@@ -97,8 +103,26 @@ void clientThread()
 			else if (messageProtocol->messageHeader.command_id == 4)
 			{
 				float x, y, z;
-				messageProtocol->receiveNewVelocity(*messageProtocol->buffer, x, y, z);
-				std::cout << "x: " << x << " y: " << y << " z: " << std::endl;
+				int id;
+				messageProtocol->receiveNewVelocity(*messageProtocol->buffer, id, x, y, z);
+				std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
+				findObjectByUniqueID(id)->initialPosition = findObjectByUniqueID(id)->position;
+				std::cout << "initialPosition " << findObjectByUniqueID(id)->initialPosition.x << " " <<
+					findObjectByUniqueID(id)->initialPosition.y << " " <<
+					findObjectByUniqueID(id)->initialPosition.z << " " << std::endl;
+
+				std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
+					findObjectByUniqueID(id)->position.y << " " <<
+					findObjectByUniqueID(id)->position.z << " " << std::endl;
+
+				//findObjectByUniqueID(id)->position = glm::vec3(x, y, z);
+				cardToMove = id;
+				if (fabs(z) > 35.0f) //sometimes z => 1000, so a card just fly away
+				{
+					z = 0.0f;
+				}
+				newPosition = glm::vec3(x, y, z);
+				moveTheCard = true;
 
 			}
 			else {
@@ -241,6 +265,7 @@ int main(void)
 
 	double lastTime = glfwGetTime();
 	double elapsedTime = 0.0f;
+	double elapsedTime2 = 0.0f;
 
 	std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
 
@@ -314,51 +339,34 @@ int main(void)
 
 		if (PRESS) {
 			messageSendProtocol->createBuffer(8);
-			messageSendProtocol->sendID(*messageSendProtocol->buffer, 25, 03); //sending id 25
+			messageSendProtocol->sendID(*messageSendProtocol->buffer, activeId, 03); //sending id 25
 			std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
 
 			send(Connection, &packet[0], packet.size(), 0);
 			PRESS = !PRESS;
 		}
 
-
-
-		//******OLD
-		/*std::string input = "";
-		std::getline(std::cin, input);
-		messageSendProtocol->createBuffer(8);
-		messageSendProtocol->messageHeader.command_id = commandID;
-		if (input == "leaveRoom")
+		if (moveTheCard)
 		{
-			if (messageSendProtocol->messageBody.roomName != "")
+			if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) < 4.0f)
 			{
-				messageSendProtocol->leaveRoom(*messageSendProtocol->buffer);
-				std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
-				send(Connection, &packet[0], packet.size(), 0);
-				continue;
+				moveTheCard = false;
+				elapsedTime2 = 0.0;
+				newPosition = glm::vec3(0.0f);
+				cardToMove = -1;
+			} else if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) > 95.0f)
+			{
+				moveTheCard = false;
+				elapsedTime2 = 0.0;
+				newPosition = glm::vec3(0.0f);
+				cardToMove = -1;
+			}
+			else {
+				updateCardPosition(elapsedTime2, cardToMove, newPosition);
+				elapsedTime2 += deltaTime;
 			}
 		}
-		if (commandID == 0)
-		{
-			messageSendProtocol->messageBody.name = input.c_str();
-			messageSendProtocol->setName(*messageSendProtocol->buffer);
-		}
-		else if (commandID == 1)
-		{
-			messageSendProtocol->messageBody.message = input.c_str();
-			messageSendProtocol->sendMessage(*messageSendProtocol->buffer);
-		}
 
-		else if (commandID == 2)
-		{
-			messageSendProtocol->messageBody.roomName = input.c_str();
-			messageSendProtocol->joinRoom(*messageSendProtocol->buffer);
-		}
-
-		std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
-		send(Connection, &packet[0], packet.size(), 0);
-
-		Sleep(10);*/
 
 		UpdateWindowTitle(window);
 		processKeys(window);
@@ -424,4 +432,30 @@ void playCard(int cardId)
 
 	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
 	send(Connection, &packet[0], packet.size(), 0);
+}
+
+void updateCardPosition(double deltaTime, int id, glm::vec3 newPosition)
+{
+	float speed = 10.0f;
+	glm::vec3 position = findObjectByUniqueID(id)->position;
+	glm::vec3 initPosition = findObjectByUniqueID(id)->initialPosition;
+
+	std::cout << "newPosition " << newPosition.x << " " <<
+		newPosition.y << " " <<
+		newPosition.z << " " << std::endl;
+
+	std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
+		findObjectByUniqueID(id)->position.y << " " <<
+		findObjectByUniqueID(id)->position.z << " " << std::endl;
+
+	glm::vec3 direction = newPosition - initPosition;
+	direction = glm::normalize(direction);
+	//glm::vec3 tempPos = glm::smoothstep(initPosition, newPosition, position);
+	float step = glm::smoothstep(1.0f, 0.0f, (float)deltaTime);
+
+	//std::cout << "step " << step << std::endl;
+
+	findObjectByUniqueID(id)->position.x += direction.x /** step*/*speed * deltaTime;
+	findObjectByUniqueID(id)->position.y += direction.y /** step*/*speed * deltaTime;
+	findObjectByUniqueID(id)->position.z += direction.z /** step*/*speed * deltaTime;
 }

@@ -38,6 +38,7 @@ struct Game
 	std::vector<cCard*> theCardDeck = createDeck();
 	int numCardsPerPlayer = 10;
 	int player1id, player2id;
+	float lastY = 0.0f;
 };
 
 client Clients[100];
@@ -91,8 +92,8 @@ void handleClients(int index)
 				}
 
 				Games.push_back(newGame);
-				Clients[newGame->player1id].GameId = Games.size();
-				Clients[newGame->player2id].GameId = Games.size();
+				Clients[newGame->player1id].GameId = Games.size() -1;
+				Clients[newGame->player2id].GameId = Games.size() -1;
 				Clients[newGame->player1id].isPlaying = true;
 				Clients[newGame->player2id].isPlaying = true;
 
@@ -153,26 +154,27 @@ void handleClients(int index)
 					std::cout << id << std::endl;
 
 					float x, y, z;
-					//((float(rand()) / float(RAND_MAX)) * (Max - Min)) + Min;
-					x = ((float(rand()) / float(RAND_MAX)) * (5.0 - (-5.0))) + (-5.0);
-					y = ((float(rand()) / float(RAND_MAX)) * (5.0 - 1.0)) + 1.0;
-					//LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-					z = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (5 - 1)));
-					z *= (-1);
+
+					x = 5 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (25 - 5)));
+					x *= (-1);
+					z = ((float(rand()) / float(RAND_MAX)) * (35.0 - (-35.0))) + (-35.0);
+
+					int gameId = Clients[index].GameId;
+					float lastY = Games[gameId]->lastY;
+					lastY += 0.03;
+					y = lastY;
+					Games[gameId]->lastY = lastY;
+
 					std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
-					/*std::stringstream ssX;
-					std::stringstream ssY;
-					std::stringstream ssZ;
-					ssX << x;
-					ssY << y;
-					ssZ << z;*/
+
+
 					std::string sX = std::to_string(x);
 					std::string sY = std::to_string(y);
 					std::string sZ = std::to_string(z);
 
 					MessageProtocol* messageSendProtocol = new MessageProtocol();
 					messageSendProtocol->createBuffer(4);
-					messageSendProtocol->sendNewVel(*messageSendProtocol->buffer, sX, sY, sZ);
+					messageSendProtocol->sendNewVel(*messageSendProtocol->buffer, id, sX, sY, sZ);
 
 					std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
 					send(Clients[index].Connection, &packet[0], packet.size(), 0);

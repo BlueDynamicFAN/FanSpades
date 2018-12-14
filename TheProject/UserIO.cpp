@@ -6,7 +6,7 @@
 #include "cMeshObject.h"
 #include "cLightManager.h"
 
-unsigned int activeId = 0;
+extern unsigned int activeId;
 unsigned int activeLightId = 0;
 cMeshObject* activeModel = NULL;//findObjectByUniqueID(activeId);
 extern cLightManager* pLightManager;

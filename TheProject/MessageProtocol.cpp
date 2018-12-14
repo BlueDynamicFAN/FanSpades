@@ -90,8 +90,10 @@ void MessageProtocol::sendID(Buffer &myBuffer, int cardID, int commandID)
 	myBuffer.WriteInt32LE(cardID);
 }
 
-void MessageProtocol::receiveNewVelocity(Buffer &myBuffer, float &x, float &y, float &z)
+void MessageProtocol::receiveNewVelocity(Buffer &myBuffer, int &id, float &x, float &y, float &z)
 {
+	id = myBuffer.ReadInt32LE();
+
 	int sizeX = myBuffer.ReadInt32LE();
 	std::string xS;
 	for (int i = 0; i != sizeX; i++)
