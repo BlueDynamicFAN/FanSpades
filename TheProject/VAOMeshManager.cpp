@@ -66,7 +66,7 @@ bool VAOMeshManager::m_LoadModelFromFile(sDrawInfo &drawInfo)
 		}
 	}
 	file >> drawInfo.numberOfVertices;
-	std::cout << "Numbers of vertices: " << drawInfo.numberOfVertices << std::endl;
+	//std::cout << "Numbers of vertices: " << drawInfo.numberOfVertices << std::endl;
 	drawInfo.verticesFromFile = new sPlyVertex[drawInfo.numberOfVertices];
 
 	while (file >> nextData) {
@@ -75,7 +75,7 @@ bool VAOMeshManager::m_LoadModelFromFile(sDrawInfo &drawInfo)
 		}
 	}
 	file >> drawInfo.numberOfTriangles;
-	std::cout << "Numbers of faces(triangles): " << drawInfo.numberOfTriangles << std::endl;
+	//std::cout << "Numbers of faces(triangles): " << drawInfo.numberOfTriangles << std::endl;
 	drawInfo.trianglesFromFile = new sPlyTriangle[drawInfo.numberOfTriangles];
 
 	while (file >> nextData) {
@@ -111,7 +111,7 @@ bool VAOMeshManager::m_LoadModelFromFile(sDrawInfo &drawInfo)
 		file >> drawInfo.trianglesFromFile[i].vertex_index_3;
 	}
 
-	std::cout << "Read model from file" << std::endl;
+	//std::cout << "Read model from file" << std::endl;
 	return true;
 }
 

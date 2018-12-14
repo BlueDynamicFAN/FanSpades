@@ -192,18 +192,27 @@ void MessageProtocol::receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, s
 	int size = myBuffer.ReadInt32LE();
 	int cardId = myBuffer.ReadInt32LE();
 	int posId = myBuffer.ReadInt32LE();
-	
-	std::cout << "CARDID " << cardId << std::endl;
-	std::cout << "POSID " << posId << std::endl;
+
+	std::cout << "Card played is " << deck[posId]->info << std::endl;
 
 	if (deck[posId]->id == cardId)
 	{
 		cards.push_back(deck[posId]);
-		deck.erase(deck.begin() + posId);
-	}
-
-	for (cCard* c : deck)
-	{
-		std::cout << c->id << std::endl;
 	}
 }
+
+//void MessageProtocol::sendResults(Buffer & myBuffer, int &id)
+//{	
+//	this->messageHeader.command_id = id;
+//	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.message.length();
+//
+//	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+//	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+//	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+//	myBuffer.WriteInt32LE(this->messageBody.message.length());
+//	const  char *temp = this->messageBody.message.c_str();
+//	for (int i = 0; temp[i] != '\0'; i++)
+//	{
+//		myBuffer.WriteChar8LE(temp[i]);
+//	}
+//}

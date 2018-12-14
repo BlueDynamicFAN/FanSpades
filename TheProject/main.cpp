@@ -47,6 +47,9 @@ VAOMeshManager* meshManager;
 cLightManager* pLightManager;
 cLight* activeLight = NULL;
 
+bool isCardPlayed = false;
+bool isGameOver = false;
+
 bool PRESS = false;
 
 void UpdateWindowTitle(GLFWwindow* window);
@@ -86,10 +89,10 @@ void clientThread()
 			if (messageProtocol->messageHeader.command_id == 1)
 			{
 				messageProtocol->receiveDeck(*messageProtocol->buffer, theCards);
-				for (int i = 0; i != theCards.size(); i++)
-				{
-					std::cout << theCards[i] << std::endl;
-				}
+				//for (int i = 0; i != theCards.size(); i++)
+				//{
+				//	std::cout << theCards[i] << std::endl;
+				//}
 			}
 			else if (messageProtocol->messageHeader.command_id == 4)
 			{
@@ -102,6 +105,15 @@ void clientThread()
 				messageProtocol->receiveMessage(*messageProtocol->buffer);
 				std::cout << messageProtocol->messageBody.message << std::endl;
 				commandID = messageProtocol->messageHeader.command_id;
+
+				if (commandID == 07)
+				{
+					isCardPlayed = false;
+				}
+				else if (commandID == 06)
+				{
+					isGameOver = true;
+				}
 			}
 			delete messageProtocol;
 			//packet.clear();
@@ -132,7 +144,7 @@ int main(void)
 	Connection = socket(AF_INET, SOCK_STREAM, NULL); //Creates connection socket
 	if (connect(Connection, (SOCKADDR*)&addr, sizeofadr) != 0)
 	{
-		MessageBox(NULL, "Fainled to connect", "Error", MB_OK | MB_ICONERROR);
+		MessageBox(NULL, "Failed to connect", "Error", MB_OK | MB_ICONERROR);
 	}
 	std::cout << "Connected!" << std::endl;
 

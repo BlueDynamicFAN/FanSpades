@@ -75,7 +75,7 @@ void loadEntitiesFromJASON(std::string fileName)
 		theMesh->setSpecularColour(glm::vec3(specular[0], specular[1], specular[2]));
 		theMesh->setMeshOrientationQuat(glm::vec4(rotation[0], rotation[1],
 			rotation[2], rotation[3]));
-		std::cout << "X: " << rotation[0] << "Y: " << rotation[1] << "Z: " << rotation[2] << std::endl;
+		//std::cout << "X: " << rotation[0] << "Y: " << rotation[1] << "Z: " << rotation[2] << std::endl;
 		theMesh->theParams->setSize(glm::vec3(size[0], size[1], size[2]));
 
 		

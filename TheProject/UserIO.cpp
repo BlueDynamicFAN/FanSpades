@@ -13,6 +13,8 @@ extern cLightManager* pLightManager;
 extern cLight* activeLight;
 void playCard(int cardId);
 extern bool PRESS;
+extern bool isCardPlayed;
+extern bool isGameOver;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -37,19 +39,34 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		activeModel->position += glm::vec3(1.0f, -1.0, 1.0);
 
 		std::cout << "Current selected card: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
-	}
+	} 
 
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-		if (findObjectByUniqueID(activeId)->bIsVisiable)
+		if (!isGameOver)
 		{
-			std::cout << "Card played: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
-			playCard(activeId);
-			findObjectByUniqueID(activeId)->bIsVisiable = false;
+			if (!isCardPlayed)
+			{
+				if (findObjectByUniqueID(activeId)->bIsVisiable)
+				{
+					//std::cout << "Card played: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
+					playCard(activeId);
+					//findObjectByUniqueID(activeId)->bIsVisiable = false;
+					isCardPlayed = true;
+				}
+				else
+				{
+					std::cout << "Card already played" << std::endl;
+				}
+			}
+			else
+			{
+				std::cout << "Waiting for other player to play card" << std::endl;
+			}
 		}
 		else
 		{
-			std::cout << "Card already played" << std::endl;
+			std::cout << "Game is over" << std::endl;
 		}
 
 	}

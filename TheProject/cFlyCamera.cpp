@@ -55,10 +55,10 @@ void cFlyCamera::loadParams(std::string filename)
 	this->at = glm::vec3(at[0], at[1], at[2]);
 	this->up = glm::vec3(up[0], up[1], up[2]);
 	this->frontOfCamera = glm::vec3(at[0], at[1], at[2]);
-	std::cout << "eye " << this->eye.x << " " << this->eye.y << " " << this->eye.z << std::endl;
-	std::cout << "at " << this->at.x << " " << this->at.y << " " << this->at.z << std::endl;
-	std::cout << "up " << this->up.x << " " << this->up.y << " " << this->up.z << std::endl;
-	std::cout << "CameraLoaded" << std::endl;
+	//std::cout << "eye " << this->eye.x << " " << this->eye.y << " " << this->eye.z << std::endl;
+	//std::cout << "at " << this->at.x << " " << this->at.y << " " << this->at.z << std::endl;
+	//std::cout << "up " << this->up.x << " " << this->up.y << " " << this->up.z << std::endl;
+	//std::cout << "CameraLoaded" << std::endl;
 }
 void cFlyCamera::saveParams(std::string filename)
 {

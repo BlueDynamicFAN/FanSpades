@@ -17,7 +17,7 @@ class cCard
 {
 public:
 	enum Suit { Spade, Heart, Club, Diamond };
-	enum Rank { Ace, One, Two, Three, Four, Five };
+	enum Rank { Ace, Two, Three, Four, Five };
 	
 	cCard(int id, Suit suit, Rank rank);
 
@@ -26,6 +26,7 @@ public:
 	Rank rank;
 	int playerId;
 	Position position;
+	std::string info;
 };
 
 #endif

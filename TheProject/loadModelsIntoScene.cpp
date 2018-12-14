@@ -32,14 +32,15 @@ void loadModelsIntoScene(int program)
 		modelInfo.meshName = g_modelsToDraw[index]->meshName;
 		if (meshManager->FindDrawInfoByModelName(modelInfo))
 		{
-			std::cout << modelInfo.meshName << " model was already loaded" << std::endl;
+			//std::cout << modelInfo.meshName << " model was already loaded" << std::endl;
 			continue;
 		}
 		if (!meshManager->LoadModelIntoVAO(modelInfo, program)) {
 			std::cout << "Can't load" << g_modelsToDraw[index]->friendlyName << " mesh model" << std::endl;
 		}
-		else {
-			std::cout << modelInfo.meshName << " model info is loaded" << std::endl;
+		else 
+		{
+			//std::cout << modelInfo.meshName << " model info is loaded" << std::endl;
 		}
 	}
 

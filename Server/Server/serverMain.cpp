@@ -14,10 +14,11 @@
 
 std::vector<cCard*> createDeck();
 std::vector<cCard*> cardsPlayed;
-void checkRound(std::vector<cCard*> &cardsPlayed, int &dealerId, int &otherId);
+int checkRound(std::vector<cCard*> &cardsPlayed, int &dealerId, int &otherId);
 
 int dealerId = 0;
 int otherId = 0;
+int roundNum = 0;
 
 std::vector<Position> positions = { Position{35.0f, 0.0f, 67.0f}, Position{35.0f, 0.0f, 52.0f}, Position{35.0f, 0.0f, 37.0f}, Position{35.0f, 0.0f, 22.0f}, Position{35.0f, 0.0f, 7.0f}, Position{35.0f, 0.0f, -8.0f}, Position{35.0f, 0.0f, -23.0f}, Position{35.0f, 0.0f, -38.0f}, Position{35.0f, 0.0f, -53.0f}, Position{35.0f, 0.0f, -68.0f} };
 
@@ -55,7 +56,7 @@ void handleClients(int index)
 	srand(time(NULL));
 	while (run)
 	{
-		
+
 		if (!Clients[index].isPlaying)
 		{
 			if (lobby.size() >= 2)
@@ -68,9 +69,7 @@ void handleClients(int index)
 					newGame->player2id = lobby[1];
 					lobby.erase(lobby.begin(), lobby.begin() + 2);
 
-					std::cout << "lobby size" << lobby.size() << std::endl;
-					std::cout << "player1id " << newGame->player1id << std::endl;
-					std::cout << "player2id " << newGame->player2id << std::endl;
+					std::cout << "\nplayer1id " + std::to_string(newGame->player1id) + "\nplayer2id " + std::to_string(newGame->player2id) << std::endl;
 				}
 
 
@@ -81,7 +80,7 @@ void handleClients(int index)
 					if (Clients[newGame->player1id].playerDeck.size() < newGame->numCardsPerPlayer)
 					{
 						int cardIndex = rand() % newGame->theCardDeck.size();
-						std::cout << "CARDS SIZE " << newGame->theCardDeck.size() << "cardIndex" << cardIndex << std::endl;
+						//std::cout << "CARDS SIZE " << newGame->theCardDeck.size() << " cardIndex " << cardIndex << std::endl;
 						Clients[newGame->player1id].playerDeck.push_back(newGame->theCardDeck[cardIndex]);
 						newGame->theCardDeck.erase(newGame->theCardDeck.begin() + cardIndex);
 					}
@@ -129,7 +128,7 @@ void handleClients(int index)
 					{
 						int arrayPosition = std::distance(lobby.begin(), it);
 						lobby.erase(lobby.begin() + arrayPosition);
-						std::cout << "Lobby size" << lobby.size() << std::endl;;
+						std::cout << "Lobby size: " << lobby.size() << std::endl;;
 					}
 				}
 				run = false;
@@ -184,26 +183,44 @@ void handleClients(int index)
 				{
 					messageProtocol->receiveCard(*messageProtocol->buffer, Clients[index].playerDeck, cardsPlayed);
 
+					sendMessageToClient(Clients[dealerId].Connection, 05, "Card played from player " + std::to_string(index) + " is " + cardsPlayed.back()->info);
+					sendMessageToClient(Clients[otherId].Connection, 05, "Card played from player " + std::to_string(index) + " is " + cardsPlayed.back()->info);
+
 					if (cardsPlayed.size() == 2)
 					{
-						int player1 = 0;
-						int player2 = 0;
+						int roundWinner = checkRound(cardsPlayed, dealerId, otherId);
+						Clients[roundWinner].score += 1;
+						roundNum++;
 
-						for (cCard* c : cardsPlayed)
+						if (roundNum == 10)
 						{
-							if (c->playerId == index)
+							int gameWinner = -1;
+
+							if (Clients[dealerId].score > Clients[otherId].score)
 							{
-								player1 += 1;
+								gameWinner = dealerId;
+							}
+							else if (Clients[dealerId].score < Clients[otherId].score)
+							{
+								gameWinner = otherId;
+							}
+
+							if (gameWinner == -1)
+							{
+								sendMessageToClient(Clients[dealerId].Connection, 06, "Game over.\nWinner is no one! Tied game! \nScores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
+								sendMessageToClient(Clients[otherId].Connection, 06, "Game over.\nWinner is no one! Tied game! \nScores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
 							}
 							else
 							{
-								player2 += 1;
+								sendMessageToClient(Clients[dealerId].Connection, 06, "Game over.\nWinner is player " + std::to_string(gameWinner) + "\nScores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
+								sendMessageToClient(Clients[otherId].Connection, 06, "Game over.\nWinner is player " + std::to_string(gameWinner) + "\nScores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
 							}
 						}
-
-						if (player1 == 1 && player2 == 1)
+						else
 						{
-							//checkRound(cardsPlayed);
+							sendMessageToClient(Clients[dealerId].Connection, 07, "Winner and advantage this round goes to " + std::to_string(roundWinner) + "\nCurrent Scores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
+							sendMessageToClient(Clients[otherId].Connection, 07, "Winner and advantage this round goes to " + std::to_string(roundWinner) + "\nCurrent Scores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
+							cardsPlayed.clear();
 						}
 					}
 				}
@@ -237,10 +254,12 @@ int main()
 	addr.sin_port = htons(1234567);
 	addr.sin_family = AF_INET; //IPv4 
 
-
 	SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL); //Creates socket to listen for new connections
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr)); // Binds the address to the socket
 	listen(sListen, SOMAXCONN); //Listen the socket
+
+	std::cout << "Networking Project #3 - Veronika Kotckovich, Jenny Moon, Ryan O'Donnell" << std::endl;
+	std::cout << "Server started" << std::endl;
 
 	//To accept a connection
 	SOCKET newConnection; //Socket to hold the client's connection
@@ -249,7 +268,7 @@ int main()
 		newConnection = accept(sListen, (SOCKADDR*)&addr, &addrlen);
 		if (newConnection == 0)
 		{
-			std::cout << "Failed to accept the clien's connection." << std::endl;
+			std::cout << "Failed to accept the client's connection." << std::endl;
 
 		}
 		else
@@ -258,11 +277,11 @@ int main()
 
 			sendMessageToClient(newConnection, 0, "Waiting for another player...");
 
-			
+
 			Clients[i].Connection = newConnection;
 			lobby.push_back(clientsCounter);
 			clientsCounter++;
-			std::cout << "Lobby size: " << lobby.size()<<std::endl;
+			std::cout << "Lobby size: " +  std::to_string(lobby.size()) << std::endl;
 			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)handleClients, (LPVOID)(i), NULL, NULL); //Create a thread
 		}
 	}
@@ -366,5 +385,20 @@ void sendMessageToClient(SOCKET theConnection, int id, std::string message)
 //			send(Clients[i].Connection, &packet[0], packet.size(), 0);
 //		}
 //	}
+//	delete messageSendProtocol;
+//}
+
+//void sendResultToClient(SOCKET theConnection, int id, int winner)
+//{
+//	MessageProtocol* messageSendProtocol = new MessageProtocol();
+//	messageSendProtocol->messageHeader.command_id = id;
+//	messageSendProtocol->messageBody.message = "Winner of this round is " + std::to_string(winner);
+//	messageSendProtocol->createBuffer(4);
+//	messageSendProtocol->sendResults(*messageSendProtocol->buffer, id);
+//
+//	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+//
+//	send(theConnection, &packet[0], packet.size(), 0);
+//
 //	delete messageSendProtocol;
 //}

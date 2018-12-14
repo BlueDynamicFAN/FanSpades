@@ -72,7 +72,7 @@ void MessageProtocol::receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck)
 {
 	//readHeader(myBuffer);
 	int size = myBuffer.ReadInt32LE();
-	std::cout << " SIZE " << size << std::endl;
+	//std::cout << "SIZE " << size << std::endl;
 	for (int i = 0; i != size; i++)
 	{
 		int newCard = myBuffer.ReadInt32LE();
