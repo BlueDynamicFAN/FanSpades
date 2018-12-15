@@ -18,7 +18,7 @@ extern bool isGameOver;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	activeModel = g_modelsToDraw[10];
+	activeModel = g_modelsToDraw[20];
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
@@ -53,6 +53,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					playCard(activeId);
 					//findObjectByUniqueID(activeId)->bIsVisiable = false;
 					isCardPlayed = true;
+					PRESS = true;
 				}
 				else
 				{
@@ -68,7 +69,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			std::cout << "Game is over" << std::endl;
 		}
-
 	}
 
 	if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)

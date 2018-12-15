@@ -48,6 +48,7 @@ std::vector<Game*> Games;
 int clientsCounter = 0;
 void sendDeckToClient(int plyerID, std::vector<cCard*> theDeck);
 void sendMessageToClient(SOCKET theConnection, int id, std::string message);
+void sendCardIdToOther(int clientIndex, int id, int cardId);
 
 void handleClients(int index)
 {
@@ -87,6 +88,17 @@ void handleClients(int index)
 					}
 					else {
 						Clients[newGame->player2id].playerDeck = newGame->theCardDeck;
+
+						for (cCard* c : Clients[newGame->player1id].playerDeck)
+						{
+							Clients[newGame->player2id].playerDeck.push_back(c);
+						}
+
+						for (int i = 0; i < 10; i++)
+						{
+							Clients[newGame->player1id].playerDeck.push_back(Clients[newGame->player2id].playerDeck[i]);
+						}
+
 						done = true;
 					}
 				}
@@ -184,6 +196,7 @@ void handleClients(int index)
 				if (messageProtocol->messageHeader.command_id == 4)
 				{
 					messageProtocol->receiveCard(*messageProtocol->buffer, Clients[index].playerDeck, cardsPlayed);
+					sendCardIdToOther(index, 03, cardsPlayed.back()->id);
 
 					sendMessageToClient(Clients[dealerId].Connection, 05, "Card played from player " + std::to_string(index) + " is " + cardsPlayed.back()->info);
 					sendMessageToClient(Clients[otherId].Connection, 05, "Card played from player " + std::to_string(index) + " is " + cardsPlayed.back()->info);
@@ -367,28 +380,27 @@ void sendMessageToClient(SOCKET theConnection, int id, std::string message)
 ////@param: connection Id, room name, command id, the message to be sent
 ////@return: void
 //
-//void sendMessageOthersInGroup(int clientIndex,  std::string roomName, int id, std::string message)
-//{
-//	MessageProtocol* messageSendProtocol = new MessageProtocol();
-//	messageSendProtocol->messageHeader.command_id = id;
-//
-//	messageSendProtocol->messageBody.message = message;
-//	messageSendProtocol->createBuffer(4);
-//	messageSendProtocol->sendMessage(*messageSendProtocol->buffer);
-//	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
-//	for (int i = 0; i < clientsCounter; i++)
-//	{
-//		if (clientIndex == i) 
-//		{
-//			continue;
-//		}
-//		if (Clients[i].room == roomName)
-//		{
-//			send(Clients[i].Connection, &packet[0], packet.size(), 0);
-//		}
-//	}
-//	delete messageSendProtocol;
-//}
+void sendCardIdToOther(int clientIndex, int id, int cardId)
+{
+	MessageProtocol* messageSendProtocol = new MessageProtocol();
+	messageSendProtocol->messageHeader.command_id = id;
+
+	messageSendProtocol->createBuffer(4);
+	messageSendProtocol->sendCardId(*messageSendProtocol->buffer, id, cardId);
+	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+	for (int i = 0; i < clientsCounter; i++)
+	{
+		if (clientIndex == i) 
+		{
+			continue;
+		}
+		else
+		{
+			send(Clients[i].Connection, &packet[0], packet.size(), 0);
+		}
+	}
+	delete messageSendProtocol;
+}
 
 //void sendResultToClient(SOCKET theConnection, int id, int winner)
 //{

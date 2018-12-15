@@ -29,9 +29,10 @@ public:
 	void receiveMessage(Buffer &myBuffer);
 	void sendID(Buffer &myBuffer, int cardID, int commandID);
 	void createBuffer(size_t index);
-	void receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck);
+	void receiveDeck(Buffer &myBuffer, std::vector<int> &playerDeck, std::vector<int> &otherDeck);
 	void sendCard(Buffer &myBuffer, int cardId, int posId);
 	void receiveNewVelocity(Buffer &myBuffer, int &id, float &x, float &y, float &z);
+	void receiveCardId(Buffer &myBuffer, int &cardId);
 	
 	Header messageHeader;
 	Body messageBody;

@@ -60,7 +60,7 @@ void MessageProtocol::receiveID(Buffer &myBuffer, int &id)
 void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
 {
 	this->messageHeader.command_id = 01;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 11;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 21;
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
 	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
 	myBuffer.WriteShort16LE(this->messageHeader.command_id);
@@ -205,18 +205,12 @@ void MessageProtocol::receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, s
 	}
 }
 
-//void MessageProtocol::sendResults(Buffer & myBuffer, int &id)
-//{	
-//	this->messageHeader.command_id = id;
-//	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + this->messageBody.message.length();
-//
-//	myBuffer.resizeBuffer(this->messageHeader.packet_length);
-//	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
-//	myBuffer.WriteShort16LE(this->messageHeader.command_id);
-//	myBuffer.WriteInt32LE(this->messageBody.message.length());
-//	const  char *temp = this->messageBody.message.c_str();
-//	for (int i = 0; temp[i] != '\0'; i++)
-//	{
-//		myBuffer.WriteChar8LE(temp[i]);
-//	}
-//}
+void MessageProtocol::sendCardId(Buffer & myBuffer, int &id, int &cardId)
+{	
+	this->messageHeader.command_id = id;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(int) + sizeof(short);
+	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+	myBuffer.WriteInt32LE(cardId);
+}

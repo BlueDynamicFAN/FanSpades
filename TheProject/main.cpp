@@ -28,10 +28,12 @@
 #include <ctime>
 #include <cstdlib>
 
-std::vector<int> theCards;
+std::vector<int> playerCards;
+std::vector<int> otherCards;
 unsigned int activeId = 0;
 unsigned int cardToMove = 0;
 bool moveTheCard = false;
+bool moveOtherCard = false;
 glm::vec3 newPosition = glm::vec3(0.0f);
 
 SOCKET Connection;
@@ -56,6 +58,8 @@ bool isCardPlayed = false;
 bool isGameOver = false;
 
 bool PRESS = false;
+
+int otherCardId = -1;
 
 void UpdateWindowTitle(GLFWwindow* window);
 void lightDebugSpheres(int program);
@@ -92,13 +96,29 @@ void clientThread()
 			messageProtocol->readHeader(*messageProtocol->buffer);
 
 			messageProtocol->buffer->resizeBuffer(messageProtocol->messageHeader.packet_length);
+			std::cout << "Command ID " << messageProtocol->messageHeader.command_id << std::endl;
 			if (messageProtocol->messageHeader.command_id == 1)
 			{
-				messageProtocol->receiveDeck(*messageProtocol->buffer, theCards);
+				messageProtocol->receiveDeck(*messageProtocol->buffer, playerCards, otherCards);
 				//for (int i = 0; i != theCards.size(); i++)
 				//{
-				//	std::cout << theCards[i] << std::endl;
+				std::cout << "DECK RECIEVED" << std::endl;
 				//}
+			}
+			else if (messageProtocol->messageHeader.command_id == 3)
+			{
+				messageProtocol->receiveCardId(*messageProtocol->buffer, otherCardId);
+
+				std::cout << otherCardId << std::endl;
+				//MessageProtocol* messageSendProtocol = new MessageProtocol();
+				//messageSendProtocol->createBuffer(8);
+				//messageSendProtocol->sendID(*messageSendProtocol->buffer, otherCardId, 03); //sending id 25
+				//std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
+
+				//moveOtherCard = true;
+
+				//send(Connection, &packet[0], packet.size(), 0);
+
 			}
 			else if (messageProtocol->messageHeader.command_id == 4)
 			{
@@ -107,13 +127,13 @@ void clientThread()
 				messageProtocol->receiveNewVelocity(*messageProtocol->buffer, id, x, y, z);
 				std::cout << "x: " << x << " y: " << y << " z: " << z << std::endl;
 				findObjectByUniqueID(id)->initialPosition = findObjectByUniqueID(id)->position;
-				std::cout << "initialPosition " << findObjectByUniqueID(id)->initialPosition.x << " " <<
-					findObjectByUniqueID(id)->initialPosition.y << " " <<
-					findObjectByUniqueID(id)->initialPosition.z << " " << std::endl;
+				//std::cout << "initialPosition " << findObjectByUniqueID(id)->initialPosition.x << " " <<
+				//	findObjectByUniqueID(id)->initialPosition.y << " " <<
+				//	findObjectByUniqueID(id)->initialPosition.z << " " << std::endl;
 
-				std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
-					findObjectByUniqueID(id)->position.y << " " <<
-					findObjectByUniqueID(id)->position.z << " " << std::endl;
+				//std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
+				//	findObjectByUniqueID(id)->position.y << " " <<
+				//	findObjectByUniqueID(id)->position.z << " " << std::endl;
 
 				//findObjectByUniqueID(id)->position = glm::vec3(x, y, z);
 				cardToMove = id;
@@ -228,7 +248,7 @@ int main(void)
 		std::cout << pTheShaderManager->getLastError() << std::endl;
 	}
 	//***End 
-	
+
 	//***creating a chader program
 	GLuint program = pTheShaderManager->getIDFromFriendlyName("myShader");
 
@@ -249,10 +269,10 @@ int main(void)
 	loadModelsIntoScene(program);
 
 	//lights
-	pLightManager->setLights(program, "./assets/JSON/lights1.json"); 
+	pLightManager->setLights(program, "./assets/JSON/lights1.json");
 	activeLight = pLightManager->vecLights[0];
-	
-	g_FlyCamera = new cFlyCamera(); 
+
+	g_FlyCamera = new cFlyCamera();
 	g_FlyCamera->loadParams("./assets/JSON/camera.json");
 
 
@@ -269,25 +289,34 @@ int main(void)
 
 	std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
 
-	
+
 
 	while (!glfwWindowShouldClose(window))
 	{
-		if (theCards.size() == 10)
+		if (playerCards.size() == 10)
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				g_modelsToDraw[i]->vecTextures[0].name = textureNames[theCards[i]];
+				g_modelsToDraw[i]->vecTextures[0].name = textureNames[playerCards[i]];
 			}
 		}
+
+		if (otherCards.size() == 10)
+		{
+			for (int i = 10; i < 20; i++)
+			{
+				g_modelsToDraw[i]->vecTextures[0].name = textureNames[otherCards[i - 10]];
+			}
+		}
+
 		float ratio;
 		int width, height;
 
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 		glViewport(0, 0, width, height);
-		glEnable(GL_DEPTH); 
-		glEnable(GL_DEPTH_TEST); 
+		glEnable(GL_DEPTH);
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -295,16 +324,16 @@ int main(void)
 		glm::mat4x4 matView, matProjection;
 		matProjection = IDENTITY;
 		matView = IDENTITY;
-		
+
 
 		matProjection = glm::perspective(0.6f, ratio, 0.1f, 1000.0f);
 		matView = glm::lookAt(g_FlyCamera->eye, g_FlyCamera->getAtInWorldSpace(), g_FlyCamera->up);
-		
+
 		glUniform3f(eyeLocation_location, g_FlyCamera->eye.x, ::g_FlyCamera->eye.y, ::g_FlyCamera->eye.z);
 
 		for (unsigned int numObj = 0; numObj < g_modelsToDraw.size(); numObj++) {
 			glm::mat4x4 matModel = IDENTITY;
-			
+
 			DrawObj(g_modelsToDraw[numObj], program, matModel);
 
 			glUniformMatrix4fv(matView_location, 1, GL_FALSE, glm::value_ptr(matView));
@@ -354,7 +383,8 @@ int main(void)
 				elapsedTime2 = 0.0;
 				newPosition = glm::vec3(0.0f);
 				cardToMove = -1;
-			} else if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) > 95.0f)
+			}
+			else if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) > 95.0f)
 			{
 				moveTheCard = false;
 				elapsedTime2 = 0.0;
@@ -365,8 +395,30 @@ int main(void)
 				updateCardPosition(elapsedTime2, cardToMove, newPosition);
 				elapsedTime2 += deltaTime;
 			}
+
 		}
 
+		if (moveOtherCard == true)
+		{
+			if (glm::distance(findObjectByUniqueID(otherCardId)->position, newPosition) < 4.0f)
+			{
+				moveOtherCard = false;
+				elapsedTime2 = 0.0;
+				newPosition = glm::vec3(0.0f);
+				otherCardId = -1;
+			}
+			else if (glm::distance(findObjectByUniqueID(otherCardId)->position, newPosition) > 95.0f)
+			{
+				moveOtherCard = false;
+				elapsedTime2 = 0.0;
+				newPosition = glm::vec3(0.0f);
+				otherCardId = -1;
+			}
+			else {
+				updateCardPosition(elapsedTime2, otherCardId, newPosition);
+				elapsedTime2 += deltaTime;
+			}
+		}
 
 		UpdateWindowTitle(window);
 		processKeys(window);
@@ -387,7 +439,7 @@ int main(void)
 void UpdateWindowTitle(GLFWwindow* window)
 {
 	std::stringstream ssTitle;
-	ssTitle << activeLight->name << " - "<<activeLight->atten.x << " , "
+	ssTitle << activeLight->name << " - " << activeLight->atten.x << " , "
 		<< activeLight->atten.y << " , "
 		<< activeLight->atten.z;
 
@@ -428,7 +480,7 @@ void playCard(int cardId)
 	messageSendProtocol->createBuffer(8);
 	messageSendProtocol->messageHeader.command_id = commandID;
 
-	messageSendProtocol->sendCard(*messageSendProtocol->buffer, theCards[cardId], cardId);
+	messageSendProtocol->sendCard(*messageSendProtocol->buffer, playerCards[cardId], cardId);
 
 	std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
 	send(Connection, &packet[0], packet.size(), 0);

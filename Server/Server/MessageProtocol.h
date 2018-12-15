@@ -37,7 +37,7 @@ public:
 	void sendDeck(Buffer &myBuffer, std::vector<cCard*> deck);
 	void receiveID(Buffer &myBuffer, int &id);
 	void receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards);
-	void sendResults(Buffer &myBuffer, int &id);
+	void sendCardId(Buffer &myBuffer, int &id, int &cardId);
 	Header messageHeader;
 	Body messageBody;
 	Buffer* buffer;
