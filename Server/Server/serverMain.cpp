@@ -225,19 +225,19 @@ void handleClients(int index)
 							sendMessageToClient(Clients[dealerId].Connection, 07, "Winner and advantage this round goes to " + std::to_string(roundWinner) + "\nCurrent Scores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
 							sendMessageToClient(Clients[otherId].Connection, 07, "Winner and advantage this round goes to " + std::to_string(roundWinner) + "\nCurrent Scores: \nPlayer " + std::to_string(dealerId) + ": " + std::to_string(Clients[dealerId].score) + "\nPlayer " + std::to_string(otherId) + ": " + std::to_string(Clients[otherId].score));
 
-							MessageProtocol* deleteCardProtocol = new MessageProtocol();
-							deleteCardProtocol->createBuffer(4);
-							deleteCardProtocol->removeCardFromTable(*deleteCardProtocol->buffer, 8, cardsPlayed[0]->id);
-							std::vector<char> packet = deleteCardProtocol->buffer->mBuffer;
-							send(Clients[cardsPlayed[0]->playerId].Connection, &packet[0], packet.size(), 0);
-							delete deleteCardProtocol;
+							//MessageProtocol* deleteCardProtocol = new MessageProtocol();
+							//deleteCardProtocol->createBuffer(4);
+							//deleteCardProtocol->removeCardFromTable(*deleteCardProtocol->buffer, 8, cardsPlayed[0]->id);
+							//std::vector<char> packet = deleteCardProtocol->buffer->mBuffer;
+							//send(Clients[cardsPlayed[0]->playerId].Connection, &packet[0], packet.size(), 0);
+							//delete deleteCardProtocol;
 
-							MessageProtocol* deleteCardProtocol1 = new MessageProtocol();
-							deleteCardProtocol1->createBuffer(4);
-							deleteCardProtocol1->removeCardFromTable(*deleteCardProtocol1->buffer, 8, cardsPlayed[1]->id);
-							std::vector<char> packet1 = deleteCardProtocol1->buffer->mBuffer;
-							send(Clients[cardsPlayed[1]->playerId].Connection, &packet1[0], packet1.size(), 0);
-							delete deleteCardProtocol1;
+							//MessageProtocol* deleteCardProtocol1 = new MessageProtocol();
+							//deleteCardProtocol1->createBuffer(4);
+							//deleteCardProtocol1->removeCardFromTable(*deleteCardProtocol1->buffer, 8, cardsPlayed[1]->id);
+							//std::vector<char> packet1 = deleteCardProtocol1->buffer->mBuffer;
+							//send(Clients[cardsPlayed[1]->playerId].Connection, &packet1[0], packet1.size(), 0);
+							//delete deleteCardProtocol1;
 
 							std::cout << "SEND" << std::endl;
 

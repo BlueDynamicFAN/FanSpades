@@ -137,12 +137,12 @@ void clientThread()
 			}
 			else if (messageProtocol->messageHeader.command_id == 8)
 			{
-				std::cout << "GET" << std::endl;
-				int tempId = -1;
-				messageProtocol->receiveCardId(*messageProtocol->buffer, tempId);
-				std::cout << "TEMP ID " << tempId << std::endl;
-				findObjectByUniqueID(tempId)->bIsVisiable = false;
-				g_modelsToDraw[10]->vecTextures[0].name = "Red.bmp";
+				//std::cout << "GET" << std::endl;
+				//int tempId = -1;
+				//messageProtocol->receiveCardId(*messageProtocol->buffer, tempId);
+				//std::cout << "TEMP ID " << tempId << std::endl;
+				//findObjectByUniqueID(tempId)->bIsVisiable = false;
+				//g_modelsToDraw[10]->vecTextures[0].name = "Red.bmp";
 			}
 			else {
 				messageProtocol->receiveMessage(*messageProtocol->buffer);
