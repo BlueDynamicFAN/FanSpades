@@ -1,0 +1,14 @@
+﻿  serverMain.cpp
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(58): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(82): warning C4018: '<': signed/unsigned mismatch
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(161): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(165): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(259): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(275): warning C4305: 'argument': truncation from 'int' to 'u_short'
+c:\users\jenny\downloads\fanspades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\server\server\servermain.cpp(275): warning C4309: 'argument': truncation of constant value
+  Generating code
+  2 of 581 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Server.vcxproj -> C:\Users\Jenny\Downloads\FanSpades-0fe52a68f86196a492f3bd45c4684d2a936d8e44\Server\Release\Server.exe

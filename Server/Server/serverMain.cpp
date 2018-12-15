@@ -93,8 +93,8 @@ void handleClients(int index)
 				}
 
 				Games.push_back(newGame);
-				Clients[newGame->player1id].GameId = Games.size() - 1;
-				Clients[newGame->player2id].GameId = Games.size() - 1;
+				Clients[newGame->player1id].GameId = Games.size() -1;
+				Clients[newGame->player2id].GameId = Games.size() -1;
 				Clients[newGame->player1id].isPlaying = true;
 				Clients[newGame->player2id].isPlaying = true;
 
@@ -302,7 +302,7 @@ int main()
 			Clients[i].Connection = newConnection;
 			lobby.push_back(clientsCounter);
 			clientsCounter++;
-			std::cout << "Lobby size: " + std::to_string(lobby.size()) << std::endl;
+			std::cout << "Lobby size: " +  std::to_string(lobby.size()) << std::endl;
 			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)handleClients, (LPVOID)(i), NULL, NULL); //Create a thread
 		}
 	}

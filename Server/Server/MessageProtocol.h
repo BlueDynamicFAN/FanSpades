@@ -10,7 +10,7 @@
 #include "Buffer.h"
 #include "cCard.h"
 
-struct Body {
+struct Body{
 	std::string roomName;
 	std::string message;
 	std::string name;
@@ -18,7 +18,7 @@ struct Body {
 
 struct Header {
 	size_t packet_length;
-	short command_id;
+	short command_id ;
 };
 
 class MessageProtocol {

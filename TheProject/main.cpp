@@ -247,7 +247,7 @@ int main(void)
 		std::cout << pTheShaderManager->getLastError() << std::endl;
 	}
 	//***End 
-
+	
 	//***creating a chader program
 	GLuint program = pTheShaderManager->getIDFromFriendlyName("myShader");
 
@@ -268,10 +268,10 @@ int main(void)
 	loadModelsIntoScene(program);
 
 	//lights
-	pLightManager->setLights(program, "./assets/JSON/lights1.json");
+	pLightManager->setLights(program, "./assets/JSON/lights1.json"); 
 	activeLight = pLightManager->vecLights[0];
-
-	g_FlyCamera = new cFlyCamera();
+	
+	g_FlyCamera = new cFlyCamera(); 
 	g_FlyCamera->loadParams("./assets/JSON/camera.json");
 
 
@@ -301,8 +301,8 @@ int main(void)
 		glfwGetFramebufferSize(window, &width, &height);
 		ratio = width / (float)height;
 		glViewport(0, 0, width, height);
-		glEnable(GL_DEPTH);
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH); 
+		glEnable(GL_DEPTH_TEST); 
 		glEnable(GL_CULL_FACE);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -310,16 +310,16 @@ int main(void)
 		glm::mat4x4 matView, matProjection;
 		matProjection = IDENTITY;
 		matView = IDENTITY;
-
+		
 
 		matProjection = glm::perspective(0.6f, ratio, 0.1f, 1000.0f);
 		matView = glm::lookAt(g_FlyCamera->eye, g_FlyCamera->getAtInWorldSpace(), g_FlyCamera->up);
-
+		
 		glUniform3f(eyeLocation_location, g_FlyCamera->eye.x, ::g_FlyCamera->eye.y, ::g_FlyCamera->eye.z);
 
 		for (unsigned int numObj = 0; numObj < g_modelsToDraw.size(); numObj++) {
 			glm::mat4x4 matModel = IDENTITY;
-
+			
 			DrawObj(g_modelsToDraw[numObj], program, matModel);
 
 			glUniformMatrix4fv(matView_location, 1, GL_FALSE, glm::value_ptr(matView));
@@ -369,8 +369,7 @@ int main(void)
 				elapsedTime2 = 0.0;
 				newPosition = glm::vec3(0.0f);
 				cardToMove = -1;
-			}
-			else if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) > 95.0f)
+			} else if (glm::distance(findObjectByUniqueID(cardToMove)->position, newPosition) > 95.0f)
 			{
 				moveTheCard = false;
 				elapsedTime2 = 0.0;

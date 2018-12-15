@@ -39,7 +39,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		activeModel->position += glm::vec3(1.0f, -1.0, 1.0);
 
 		std::cout << "Current selected card: " << findObjectByUniqueID(activeId)->friendlyName << std::endl;
-	}
+	} 
 
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
@@ -214,34 +214,34 @@ void processKeys(GLFWwindow* window)
 	//SAVING TO JSON
 	if (IsAltDown(window) && IsCtrlDown(window))
 	{
-		if (glfwGetKey(window, GLFW_KEY_S))
+		if (glfwGetKey(window, GLFW_KEY_S)) 
 		{
 			loadALLEntitiesToJASON("./assets/JSON/entities2.json");
 			pLightManager->saveLights("./assets/JSON/lights1.json");
 			g_FlyCamera->saveParams("./assets/JSON/camera.json");
-
-
+			
+			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_M))
 		{
 			loadALLEntitiesToJASON("./assets/JSON/entities2.json");
-
+			
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_L))
+		if (glfwGetKey(window, GLFW_KEY_L)) 
 		{
 			pLightManager->saveLights("./assets/JSON/lights1.json");
-
+			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_C))
 		{
 			g_FlyCamera->saveParams("./assets/JSON/camera.json");
-
+			
 		}
 	}
-	if (IsCtrlDown(window) && !IsAltDown(window))
+	if (IsCtrlDown(window)&&!IsAltDown(window))
 	{
 		if (glfwGetKey(window, GLFW_KEY_W)) { activeLight->position.z += modelSpeed; }
 		if (glfwGetKey(window, GLFW_KEY_S)) { activeLight->position.z -= modelSpeed; }
@@ -256,15 +256,15 @@ void processKeys(GLFWwindow* window)
 		if (glfwGetKey(window, GLFW_KEY_4)) { activeLight->atten.z -= QUAD_ATTEN_STEP; }
 		if (glfwGetKey(window, GLFW_KEY_0)) { activeLight->setLightOn(false); }
 		if (glfwGetKey(window, GLFW_KEY_9)) { activeLight->setLightOn(true); }
-		if (glfwGetKey(window, GLFW_KEY_L))
-		{
+		if (glfwGetKey(window, GLFW_KEY_L)) 
+		{ 
 			float r = (float)rand() / RAND_MAX;
 			float g = (float)rand() / RAND_MAX;
 			float b = (float)rand() / RAND_MAX;
-			activeLight->setDiffuse(glm::vec4(r, g, b, 1.0));
+			activeLight->setDiffuse(glm::vec4(r,g,b,1.0));
 		}
 		if (glfwGetKey(window, GLFW_KEY_K)) { activeLight->setDiffuse(glm::vec4(1.0, 1.0, 1.0, 1.0)); }
-
+		
 		//DIRECTION
 		const float ROTATE = 0.05;
 		if (glfwGetKey(window, GLFW_KEY_X) && glfwGetKey(window, GLFW_KEY_EQUAL)) { activeLight->direction.x += ROTATE; }
@@ -281,7 +281,7 @@ void processKeys(GLFWwindow* window)
 	const float OBJ_SPEC = 1.0;
 	const float ROTATE = 0.05;
 	const float SCALE = 0.01;
-	if (IsAltDown(window) && !IsCtrlDown(window))
+	if (IsAltDown(window)&&!IsCtrlDown(window))
 	{
 		//CHANGING POSITION
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) { activeModel->position.z += modelSpeed; }
@@ -303,19 +303,18 @@ void processKeys(GLFWwindow* window)
 		}
 
 		//CHANGING ROTATION
-
-		if (glfwGetKey(window, GLFW_KEY_X) && glfwGetKey(window, GLFW_KEY_9)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(ROTATE, 0.0f, 0.0f))); }
+		
+		if (glfwGetKey(window, GLFW_KEY_X) && glfwGetKey(window, GLFW_KEY_9)){ activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(ROTATE, 0.0f, 0.0f)));}
 		if (glfwGetKey(window, GLFW_KEY_X) && glfwGetKey(window, GLFW_KEY_0)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(-ROTATE, 0.0f, 0.0f))); }
 
 		if (glfwGetKey(window, GLFW_KEY_Y) && glfwGetKey(window, GLFW_KEY_9)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, ROTATE, 0.0f))); }
-		if (glfwGetKey(window, GLFW_KEY_Y) && glfwGetKey(window, GLFW_KEY_0)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, -ROTATE, 0.0f))); }
+		if (glfwGetKey(window, GLFW_KEY_Y) && glfwGetKey(window, GLFW_KEY_0)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, -ROTATE, 0.0f)));}
 
 		if (glfwGetKey(window, GLFW_KEY_Z) && glfwGetKey(window, GLFW_KEY_9)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, 0.0f, ROTATE))); }
-		if (glfwGetKey(window, GLFW_KEY_Z) && glfwGetKey(window, GLFW_KEY_0)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, 0.0f, -ROTATE))); }
-
+		if (glfwGetKey(window, GLFW_KEY_Z) && glfwGetKey(window, GLFW_KEY_0)) { activeModel->adjMeshOrientationQ(glm::quat(glm::vec3(0.0f, 0.0f, -ROTATE)));}
+		
 		//CHANGING isVisiable
-		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
-			activeModel->bIsVisiable = !activeModel->bIsVisiable;;
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) { activeModel->bIsVisiable = !activeModel->bIsVisiable;;
 			Sleep(1);
 		}
 		//CHANGING isWireFrame

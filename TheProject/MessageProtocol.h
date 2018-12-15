@@ -9,13 +9,13 @@
 #include <string>
 #include "Buffer.h"
 
-struct Body {
+struct Body{
 	std::string message;
 };
 
 struct Header {
 	size_t packet_length;
-	short command_id;
+	short command_id ;
 };
 
 class MessageProtocol {
@@ -33,7 +33,7 @@ public:
 	void sendCard(Buffer &myBuffer, int cardId, int posId);
 	void receiveNewVelocity(Buffer &myBuffer, int &id, float &x, float &y, float &z);
 	void receiveCardId(Buffer &myBuffer, int &cardId);
-
+	
 	Header messageHeader;
 	Body messageBody;
 	Buffer* buffer;
