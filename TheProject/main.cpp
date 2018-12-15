@@ -33,7 +33,6 @@ std::vector<int> otherCards;
 unsigned int activeId = 0;
 unsigned int cardToMove = 0;
 bool moveTheCard = false;
-bool moveOtherCard = false;
 glm::vec3 newPosition = glm::vec3(0.0f);
 
 SOCKET Connection;
@@ -64,6 +63,8 @@ int otherCardId = -1;
 void UpdateWindowTitle(GLFWwindow* window);
 void lightDebugSpheres(int program);
 void updateCardPosition(double deltaTime, int id, glm::vec3 newPosition);
+
+std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
 
 static void error_callback(int error, const char* description)
 {
@@ -99,26 +100,15 @@ void clientThread()
 			std::cout << "Command ID " << messageProtocol->messageHeader.command_id << std::endl;
 			if (messageProtocol->messageHeader.command_id == 1)
 			{
-				messageProtocol->receiveDeck(*messageProtocol->buffer, playerCards, otherCards);
-				//for (int i = 0; i != theCards.size(); i++)
-				//{
+				messageProtocol->receiveDeck(*messageProtocol->buffer, playerCards);
 				std::cout << "DECK RECIEVED" << std::endl;
-				//}
 			}
 			else if (messageProtocol->messageHeader.command_id == 3)
 			{
 				messageProtocol->receiveCardId(*messageProtocol->buffer, otherCardId);
 
 				std::cout << otherCardId << std::endl;
-				//MessageProtocol* messageSendProtocol = new MessageProtocol();
-				//messageSendProtocol->createBuffer(8);
-				//messageSendProtocol->sendID(*messageSendProtocol->buffer, otherCardId, 03); //sending id 25
-				//std::vector<char> packet = messageSendProtocol->buffer->mBuffer;
-
-				//moveOtherCard = true;
-
-				//send(Connection, &packet[0], packet.size(), 0);
-
+				g_modelsToDraw[10]->vecTextures[0].name = textureNames[otherCardId];
 			}
 			else if (messageProtocol->messageHeader.command_id == 4)
 			{
@@ -144,6 +134,15 @@ void clientThread()
 				newPosition = glm::vec3(x, y, z);
 				moveTheCard = true;
 
+			}
+			else if (messageProtocol->messageHeader.command_id == 8)
+			{
+				std::cout << "GET" << std::endl;
+				int tempId = -1;
+				messageProtocol->receiveCardId(*messageProtocol->buffer, tempId);
+				std::cout << "TEMP ID " << tempId << std::endl;
+				findObjectByUniqueID(tempId)->bIsVisiable = false;
+				g_modelsToDraw[10]->vecTextures[0].name = "Red.bmp";
 			}
 			else {
 				messageProtocol->receiveMessage(*messageProtocol->buffer);
@@ -287,10 +286,6 @@ int main(void)
 	double elapsedTime = 0.0f;
 	double elapsedTime2 = 0.0f;
 
-	std::string textureNames[] = { "S1.bmp", "S2.bmp", "S3.bmp", "S4.bmp", "S5.bmp", "H1.bmp", "H2.bmp", "H3.bmp", "H4.bmp", "H5.bmp", "C1.bmp", "C2.bmp", "C3.bmp", "C4.bmp", "C5.bmp", "D1.bmp", "D2.bmp", "D3.bmp", "D4.bmp", "D5.bmp" };
-
-
-
 	while (!glfwWindowShouldClose(window))
 	{
 		if (playerCards.size() == 10)
@@ -300,15 +295,6 @@ int main(void)
 				g_modelsToDraw[i]->vecTextures[0].name = textureNames[playerCards[i]];
 			}
 		}
-
-		if (otherCards.size() == 10)
-		{
-			for (int i = 10; i < 20; i++)
-			{
-				g_modelsToDraw[i]->vecTextures[0].name = textureNames[otherCards[i - 10]];
-			}
-		}
-
 		float ratio;
 		int width, height;
 
@@ -395,30 +381,8 @@ int main(void)
 				updateCardPosition(elapsedTime2, cardToMove, newPosition);
 				elapsedTime2 += deltaTime;
 			}
-
 		}
 
-		if (moveOtherCard == true)
-		{
-			if (glm::distance(findObjectByUniqueID(otherCardId)->position, newPosition) < 4.0f)
-			{
-				moveOtherCard = false;
-				elapsedTime2 = 0.0;
-				newPosition = glm::vec3(0.0f);
-				otherCardId = -1;
-			}
-			else if (glm::distance(findObjectByUniqueID(otherCardId)->position, newPosition) > 95.0f)
-			{
-				moveOtherCard = false;
-				elapsedTime2 = 0.0;
-				newPosition = glm::vec3(0.0f);
-				otherCardId = -1;
-			}
-			else {
-				updateCardPosition(elapsedTime2, otherCardId, newPosition);
-				elapsedTime2 += deltaTime;
-			}
-		}
 
 		UpdateWindowTitle(window);
 		processKeys(window);
@@ -438,12 +402,12 @@ int main(void)
 
 void UpdateWindowTitle(GLFWwindow* window)
 {
-	std::stringstream ssTitle;
-	ssTitle << activeLight->name << " - " << activeLight->atten.x << " , "
-		<< activeLight->atten.y << " , "
-		<< activeLight->atten.z;
+	//std::stringstream ssTitle;
+	//ssTitle << activeLight->name << " - "<<activeLight->atten.x << " , "
+	//	<< activeLight->atten.y << " , "
+	//	<< activeLight->atten.z;
 
-	glfwSetWindowTitle(window, ssTitle.str().c_str());
+	//glfwSetWindowTitle(window, ssTitle.str().c_str());
 }
 
 void lightDebugSpheres(int program)
@@ -492,13 +456,13 @@ void updateCardPosition(double deltaTime, int id, glm::vec3 newPosition)
 	glm::vec3 position = findObjectByUniqueID(id)->position;
 	glm::vec3 initPosition = findObjectByUniqueID(id)->initialPosition;
 
-	std::cout << "newPosition " << newPosition.x << " " <<
-		newPosition.y << " " <<
-		newPosition.z << " " << std::endl;
+	//std::cout << "newPosition " << newPosition.x << " " <<
+	//	newPosition.y << " " <<
+	//	newPosition.z << " " << std::endl;
 
-	std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
-		findObjectByUniqueID(id)->position.y << " " <<
-		findObjectByUniqueID(id)->position.z << " " << std::endl;
+	//std::cout << "position " << findObjectByUniqueID(id)->position.x << " " <<
+	//	findObjectByUniqueID(id)->position.y << " " <<
+	//	findObjectByUniqueID(id)->position.z << " " << std::endl;
 
 	glm::vec3 direction = newPosition - initPosition;
 	direction = glm::normalize(direction);

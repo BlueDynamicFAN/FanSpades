@@ -10,7 +10,7 @@
 #include "Buffer.h"
 #include "cCard.h"
 
-struct Body{
+struct Body {
 	std::string roomName;
 	std::string message;
 	std::string name;
@@ -18,7 +18,7 @@ struct Body{
 
 struct Header {
 	size_t packet_length;
-	short command_id ;
+	short command_id;
 };
 
 class MessageProtocol {
@@ -36,6 +36,7 @@ public:
 	void sendNewVel(Buffer &myBuffer, int id, std::string x, std::string y, std::string z);
 	void sendDeck(Buffer &myBuffer, std::vector<cCard*> deck);
 	void receiveID(Buffer &myBuffer, int &id);
+	void removeCardFromTable(Buffer & myBuffer, int id, int &cardId);
 	void receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, std::vector<cCard*> &cards);
 	void sendCardId(Buffer &myBuffer, int &id, int &cardId);
 	Header messageHeader;

@@ -68,20 +68,15 @@ void MessageProtocol::receiveMessage(Buffer &myBuffer)
 	}
 }
 
-void MessageProtocol::receiveDeck(Buffer &myBuffer, std::vector<int> &playerDeck, std::vector<int> &otherDeck)
+void MessageProtocol::receiveDeck(Buffer &myBuffer, std::vector<int> &theDeck)
 {
 	//readHeader(myBuffer);
 	int size = myBuffer.ReadInt32LE();
-	std::cout << "SIZE " << size << std::endl;
-	for (int i = 0; i < 10; i++)
+	//std::cout << "SIZE " << size << std::endl;
+	for (int i = 0; i != size; i++)
 	{
 		int newCard = myBuffer.ReadInt32LE();
-		playerDeck.push_back(newCard);
-	}
-	for (int i = 10; i < size; i++)
-	{
-		int newCard = myBuffer.ReadInt32LE();
-		otherDeck.push_back(newCard);
+		theDeck.push_back(newCard);
 	}
 }
 

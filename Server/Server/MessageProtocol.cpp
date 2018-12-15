@@ -57,10 +57,20 @@ void MessageProtocol::receiveID(Buffer &myBuffer, int &id)
 	id = myBuffer.ReadInt32LE();
 }
 
+void MessageProtocol::removeCardFromTable(Buffer & myBuffer, int id, int &cardId)
+{
+	this->messageHeader.command_id = id;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(int) + sizeof(short);
+	myBuffer.resizeBuffer(this->messageHeader.packet_length);
+	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
+	myBuffer.WriteShort16LE(this->messageHeader.command_id);
+	myBuffer.WriteInt32LE(cardId);
+}
+
 void MessageProtocol::sendDeck(Buffer &myBuffer, std::vector<cCard*> deck)
 {
 	this->messageHeader.command_id = 01;
-	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 21;
+	this->messageHeader.packet_length = sizeof(int) + sizeof(short) + sizeof(int) + sizeof(int) * 11;
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
 	myBuffer.WriteInt32LE(this->messageHeader.packet_length);
 	myBuffer.WriteShort16LE(this->messageHeader.command_id);
@@ -206,7 +216,7 @@ void MessageProtocol::receiveCard(Buffer &myBuffer, std::vector<cCard*> &deck, s
 }
 
 void MessageProtocol::sendCardId(Buffer & myBuffer, int &id, int &cardId)
-{	
+{
 	this->messageHeader.command_id = id;
 	this->messageHeader.packet_length = sizeof(int) + sizeof(int) + sizeof(short);
 	myBuffer.resizeBuffer(this->messageHeader.packet_length);
@@ -214,3 +224,4 @@ void MessageProtocol::sendCardId(Buffer & myBuffer, int &id, int &cardId)
 	myBuffer.WriteShort16LE(this->messageHeader.command_id);
 	myBuffer.WriteInt32LE(cardId);
 }
+
